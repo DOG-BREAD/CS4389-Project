@@ -1,10 +1,27 @@
 from tkinter import *
+from tkinter import ttk
 
-root = Tk()
-root.title('Port Scanner')
+def main():
+    root = Tk()
+    root.title('Port Scanner')
 
-# Adjust size of the window
-root.geometry("400x400")
-root.configure(bg="#DC143C")
+    # Adjust size of the window
+    root.geometry("800x800")
+    root.configure(bg="#E63946")
 
-root.mainloop()
+    #style for buttons
+    # style=Style()
+    # style.configure()
+
+    exit_button = Button(root, text="Exit", command=root.quit)
+    exit_button.place(relx=0.01, rely =0.01, anchor=NW)
+    scan_button = Button(root, text="Scan Ports")
+    scan_button.place(relx =0.01, rely=0.05, anchor=NW)
+
+    # need to add progress bar once scan is clicked
+    # 
+
+    root.mainloop()
+
+if __name__=="__main__":
+    main()
