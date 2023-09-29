@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+import time
 
 def main():
     root = Tk()
@@ -13,7 +14,31 @@ def main():
     # style=Style()
     # style.configure()
 
-#scanning 
+    #scanning 
+    def scanCallBack():
+        global message
+        message = Toplevel(root) # makes a pop up infront of other windows at root level
+        message.title("Scanning")
+        message.geometry("400x300")
+        message.config(bg="black")
+
+        
+        message_label = Label(message, text = "Scanning", bg='white')
+        message_label.pack(pady = 10)
+
+        message_frame = Frame(message)
+        message_frame.pack(pady=5)
+        #progress bar needed below 
+
+        pb = ttk.Progressbar(message, orient='horizontal',mode='indeterminate',length=100)
+        pb.pack()
+        pb.start(3)
+
+        stopScanning = Button(message, text="exit",command = message.destroy)
+        stopScanning.pack()
+
+        
+        #needs frame inside to display scan data 
 
 #############################################################################################################
    
@@ -52,7 +77,7 @@ def main():
 ###################################################################################################################3
     exit_button = Button(root, text="Exit", command=root.quit)
     exit_button.place(relx=0.01, rely =0.01, anchor=NW)
-    scan_button = Button(root, text="Scan Ports")
+    scan_button = Button(root, text="Scan Ports", command = scanCallBack)
     scan_button.place(relx =0.01, rely=0.05, anchor=NW)
     attack_button = Button(root, text="Attack!",command = attackCallBack )
     attack_button.place(relx =0.01, rely=0.1, anchor=NW)
