@@ -46,6 +46,8 @@ def main():
     #Attack sensed , pop up window for interaction
     def yesAttack():
             print("hi")
+
+
         #attack function for Yes_button
     def attackCallBack():
         global message
@@ -55,7 +57,7 @@ def main():
         message.config(bg="black")
 
         global attack_Image # needs global to be accessed outside of def
-        attack_Image = PhotoImage(file= "gui/pngegg.png")
+        attack_Image = PhotoImage(file= "gui/guy.png")
 
         message_label = Label(message, text = "would you like to counter attack?", bg='white')
         message_label.pack(pady = 10)
