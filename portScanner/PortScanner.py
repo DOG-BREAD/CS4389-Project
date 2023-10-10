@@ -1,5 +1,6 @@
 import sys
 import socket
+import ipaddress
 from datetime import datetime
 
 class PortScanner: 
@@ -19,18 +20,20 @@ class PortScanner:
         
         listPorts = []
         try:
-            # will scan ports between 1 to 65,535
-            for port in range(self.min, self.max):
-                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                socket.setdefaulttimeout(1)
-                
-                # returns an error indicator
-                result = s.connect_ex((target,port))
-                if result ==0:
-                    print("Port {} is open".format(port))
-                    listPorts.append(port)
-                s.close()
-        
+            if validate_ip_address(target):
+            # scan between set min and max, auto set to 1-65535
+                for port in range(self.min, self.max):
+                    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                    socket.setdefaulttimeout(1)
+                    
+                    # returns an error indicator
+                    result = s.connect_ex((target,port))
+                    if result ==0:
+                        print("Port {} is open".format(port))
+                        listPorts.append(port)
+                    s.close()
+            else:
+                sys.exit()
         except socket.gaierror:
                 print("\n Hostname Could Not Be Resolved")
                 sys.exit()
@@ -38,3 +41,11 @@ class PortScanner:
                 print("\n Server not responding")
                 sys.exit()
         return listPorts
+    def validate_ip_address(ip_string):
+        try:
+            ip_object = ipaddress.ip_address(ip_string)
+            print("The IP address '{ip_object}' is valid.")
+            return True
+        except ValueError:
+            print("The IP address '{ip_string}' is not valid")
+            return False
