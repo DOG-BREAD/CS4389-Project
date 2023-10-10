@@ -1,4 +1,4 @@
-#import pyfiglet as pyf
+from pyfiglet import figlet_format
 import sys
 import socket
 from datetime import datetime
@@ -7,11 +7,9 @@ class PortScanner:
     def _init_(self, min = 1, max = 106345):
         self.min = min
         self.max = max
-
-	def scan_port(self):
-        
-        #ascii_banner = pyfiglet.figlet_format("PORT SCANNER")
-        ascii_banner = 'PORT SCANNER'
+    
+    def scan_port(self):
+        ascii_banner = pyfiglet.figlet_format("PORT SCANNER")
         print(ascii_banner)
         
         # Defining a target
@@ -41,6 +39,7 @@ class PortScanner:
                     print("Port {} is open".format(port))
                     listPort.append(port)
                 s.close()
+            return listPort
                 
         except KeyboardInterrupt:
                 print("\n Exiting Program !!!!")
