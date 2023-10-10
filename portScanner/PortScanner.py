@@ -20,7 +20,7 @@ class PortScanner:
         
         listPorts = []
         try:
-            if validate_ip_address(target):
+            if validate_ip_address(target) == True:
             # scan between set min and max, auto set to 1-65535
                 for port in range(self.min, self.max):
                     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
