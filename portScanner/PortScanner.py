@@ -1,33 +1,24 @@
-from pyfiglet import figlet_format
 import sys
 import socket
 from datetime import datetime
 
 class PortScanner: 
-    def _init_(self, min = 1, max = 106345):
+    def _init_(self, min = 1, max = 65535):
         self.min = min
         self.max = max
     
-    def scan_port(self):
-        ascii_banner = pyfiglet.figlet_format("PORT SCANNER")
-        print(ascii_banner)
-        
-        # Defining a target
-        if len(sys.argv) == 2:
-            
-            # translate hostname to IPv4
-            target = socket.gethostbyname(sys.argv[1])
-        else:
-            print("Invalid amount of Argument")
+    def scan_port(self, target):
+        startup = 'Starting port scanner...'
+        print(startup)
 
         # Add Banner 
         print("-" * 50)
         print("Scanning Target: " + target)
         print("Scanning started at:" + str(datetime.now()))
         print("-" * 50)
-
+        
+        listPorts = []
         try:
-            listPort = []
             # will scan ports between 1 to 65,535
             for port in range(self.min, self.max):
                 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -37,16 +28,13 @@ class PortScanner:
                 result = s.connect_ex((target,port))
                 if result ==0:
                     print("Port {} is open".format(port))
-                    listPort.append(port)
+                    listPorts.append(port)
                 s.close()
-            return listPort
-                
-        except KeyboardInterrupt:
-                print("\n Exiting Program !!!!")
-                sys.exit()
+        
         except socket.gaierror:
-                print("\n Hostname Could Not Be Resolved !!!!")
+                print("\n Hostname Could Not Be Resolved")
                 sys.exit()
         except socket.error:
-                print("\ Server not responding !!!!")
+                print("\n Server not responding")
                 sys.exit()
+        return listPorts
