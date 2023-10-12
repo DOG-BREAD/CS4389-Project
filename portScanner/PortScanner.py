@@ -2,14 +2,16 @@ import sys
 import socket
 import ipaddress
 from datetime import datetime
-
+import threading
+import concurrent.futures
 
 class PortScanner:
-    def __init__(self, min=1, max=65535):
+    def __init__(self, min=1, max=65535, target="127.0.0.1"):
         self.min = min
         self.max = max
+        self.target = target
 
-    def scan_port(self, target):
+    def scan_port(self):
         def validate_ip_address(ip_string):
             try:
                 ip_object = ipaddress.ip_address(ip_string)
@@ -55,6 +57,30 @@ class PortScanner:
 
 if __name__ == "__main__":
     target = input("Enter target address: ")
-    test = PortScanner()
 
-    test.scan_port(target)
+    # converting to threads
+    threadarray = []
+    for x in range(0, 65000, 1000):
+        test = PortScanner(x, x+999, target)
+        thread = threading.Thread(target=test.scan_port)
+        threadarray.append(thread)
+        print(f"I am starting {x}")
+        thread.start()
+
+    #for last portion 
+    for x in range(65000, 65535,535):
+        test = PortScanner(x, x+535, target)
+        thread = threading.Thread(target=test.scan_port)
+        threadarray.append(thread)
+        print(f"I am starting {x}")
+        thread.start()
+
+    listOfPorts=[]
+    #join the threads
+    for x in threadarray:
+        # listOfPorts.append(x)
+        # print(x)
+        x.join()
+
+    print(listOfPorts)
+    
