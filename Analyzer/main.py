@@ -63,6 +63,8 @@ class Analyze:
         print(dst)
         tcp_cap = pyshark.FileCapture(input_file=self.file, display_filter=dst)
         pack_count = 0
+        
+        #figure out better format for saving files to text for long term analysis
         tcp_file = open('./tcp_traffic.txt', 'a')
         while True:
             try:
@@ -86,6 +88,8 @@ class Analyze:
         print(dst)
         udp_cap = pyshark.FileCapture(input_file=self.file, display_filter=dst)
         pack_count = 0
+        
+        #figure out better format for saving files to text for long term analysis
         udp_file = open('./udp_traffic.txt', 'a')
         while True:
             try:
