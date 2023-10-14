@@ -1,4 +1,4 @@
 venv/
 scan_result.pcap
-tcp_traffic.txt
-udp_traffic.txt
+./tcp_traffic.txt
+./udp_traffic.txt
