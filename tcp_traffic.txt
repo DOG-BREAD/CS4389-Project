@@ -1,0 +1,115 @@
+[1m[33mLayer IP
+:[0m[1m[32m	0100 .... = Version:[0m[1m 4
+[0m[1m[32m	.... 0101 = Header Length:[0m[1m 20 bytes (5)
+[0m[1m[32m	Differentiated Services Field:[0m[1m 0x00 (DSCP: CS0, ECN: Not-ECT)
+[0m[1m[32m	0000 00.. = Differentiated Services Codepoint:[0m[1m Default (0)
+[0m[1m[32m	.... ..00 = Explicit Congestion Notification:[0m[1m Not ECN-Capable Transport (0)
+[0m[1m[32m	Total Length:[0m[1m 86
+[0m[1m[32m	Identification:[0m[1m 0x787a (30842)
+[0m[1m[32m	Flags:[0m[1m 0x40, Don't fragment
+[0m[1m[32m	0... .... = Reserved bit:[0m[1m Not set
+[0m[1m[32m	.1.. .... = Don't fragment:[0m[1m Set
+[0m[1m[32m	..0. .... = More fragments:[0m[1m Not set
+[0m[1m[32m	...0 0000 0000 0000 = Fragment Offset:[0m[1m 0
+[0m[1m[32m	Time to Live:[0m[1m 229
+[0m[1m[32m	Protocol:[0m[1m TCP (6)
+[0m[1m[32m	Header Checksum:[0m[1m 0x0d08 [validation disabled]
+[0m[1m[32m	Header checksum status:[0m[1m Unverified
+[0m[1m[32m	Source Address:[0m[1m 54.165.12.65
+[0m[1m[32m	Destination Address:[0m[1m 192.168.12.145
+[0m[1m[33mLayer IP
+:[0m[1m[32m	0100 .... = Version:[0m[1m 4
+[0m[1m[32m	.... 0101 = Header Length:[0m[1m 20 bytes (5)
+[0m[1m[32m	Differentiated Services Field:[0m[1m 0x00 (DSCP: CS0, ECN: Not-ECT)
+[0m[1m[32m	0000 00.. = Differentiated Services Codepoint:[0m[1m Default (0)
+[0m[1m[32m	.... ..00 = Explicit Congestion Notification:[0m[1m Not ECN-Capable Transport (0)
+[0m[1m[32m	Total Length:[0m[1m 71
+[0m[1m[32m	Identification:[0m[1m 0x797a (31098)
+[0m[1m[32m	Flags:[0m[1m 0x40, Don't fragment
+[0m[1m[32m	0... .... = Reserved bit:[0m[1m Not set
+[0m[1m[32m	.1.. .... = Don't fragment:[0m[1m Set
+[0m[1m[32m	..0. .... = More fragments:[0m[1m Not set
+[0m[1m[32m	...0 0000 0000 0000 = Fragment Offset:[0m[1m 0
+[0m[1m[32m	Time to Live:[0m[1m 229
+[0m[1m[32m	Protocol:[0m[1m TCP (6)
+[0m[1m[32m	Header Checksum:[0m[1m 0x0c17 [validation disabled]
+[0m[1m[32m	Header checksum status:[0m[1m Unverified
+[0m[1m[32m	Source Address:[0m[1m 54.165.12.65
+[0m[1m[32m	Destination Address:[0m[1m 192.168.12.145
+[0m[1m[33mLayer IP
+:[0m[1m[32m	0100 .... = Version:[0m[1m 4
+[0m[1m[32m	.... 0101 = Header Length:[0m[1m 20 bytes (5)
+[0m[1m[32m	Differentiated Services Field:[0m[1m 0x00 (DSCP: CS0, ECN: Not-ECT)
+[0m[1m[32m	0000 00.. = Differentiated Services Codepoint:[0m[1m Default (0)
+[0m[1m[32m	.... ..00 = Explicit Congestion Notification:[0m[1m Not ECN-Capable Transport (0)
+[0m[1m[32m	Total Length:[0m[1m 40
+[0m[1m[32m	Identification:[0m[1m 0x7a7a (31354)
+[0m[1m[32m	Flags:[0m[1m 0x40, Don't fragment
+[0m[1m[32m	0... .... = Reserved bit:[0m[1m Not set
+[0m[1m[32m	.1.. .... = Don't fragment:[0m[1m Set
+[0m[1m[32m	..0. .... = More fragments:[0m[1m Not set
+[0m[1m[32m	...0 0000 0000 0000 = Fragment Offset:[0m[1m 0
+[0m[1m[32m	Time to Live:[0m[1m 229
+[0m[1m[32m	Protocol:[0m[1m TCP (6)
+[0m[1m[32m	Header Checksum:[0m[1m 0x0b36 [validation disabled]
+[0m[1m[32m	Header checksum status:[0m[1m Unverified
+[0m[1m[32m	Source Address:[0m[1m 54.165.12.65
+[0m[1m[32m	Destination Address:[0m[1m 192.168.12.145
+[0m[1m[33mLayer IP
+:[0m[1m[32m	0100 .... = Version:[0m[1m 4
+[0m[1m[32m	.... 0101 = Header Length:[0m[1m 20 bytes (5)
+[0m[1m[32m	Differentiated Services Field:[0m[1m 0x00 (DSCP: CS0, ECN: Not-ECT)
+[0m[1m[32m	0000 00.. = Differentiated Services Codepoint:[0m[1m Default (0)
+[0m[1m[32m	.... ..00 = Explicit Congestion Notification:[0m[1m Not ECN-Capable Transport (0)
+[0m[1m[32m	Total Length:[0m[1m 40
+[0m[1m[32m	Identification:[0m[1m 0x7b7a (31610)
+[0m[1m[32m	Flags:[0m[1m 0x40, Don't fragment
+[0m[1m[32m	0... .... = Reserved bit:[0m[1m Not set
+[0m[1m[32m	.1.. .... = Don't fragment:[0m[1m Set
+[0m[1m[32m	..0. .... = More fragments:[0m[1m Not set
+[0m[1m[32m	...0 0000 0000 0000 = Fragment Offset:[0m[1m 0
+[0m[1m[32m	Time to Live:[0m[1m 229
+[0m[1m[32m	Protocol:[0m[1m TCP (6)
+[0m[1m[32m	Header Checksum:[0m[1m 0x0a36 [validation disabled]
+[0m[1m[32m	Header checksum status:[0m[1m Unverified
+[0m[1m[32m	Source Address:[0m[1m 54.165.12.65
+[0m[1m[32m	Destination Address:[0m[1m 192.168.12.145
+[0m[1m[33mLayer IP
+:[0m[1m[32m	0100 .... = Version:[0m[1m 4
+[0m[1m[32m	.... 0101 = Header Length:[0m[1m 20 bytes (5)
+[0m[1m[32m	Differentiated Services Field:[0m[1m 0x00 (DSCP: CS0, ECN: Not-ECT)
+[0m[1m[32m	0000 00.. = Differentiated Services Codepoint:[0m[1m Default (0)
+[0m[1m[32m	.... ..00 = Explicit Congestion Notification:[0m[1m Not ECN-Capable Transport (0)
+[0m[1m[32m	Total Length:[0m[1m 40
+[0m[1m[32m	Identification:[0m[1m 0x7c7a (31866)
+[0m[1m[32m	Flags:[0m[1m 0x40, Don't fragment
+[0m[1m[32m	0... .... = Reserved bit:[0m[1m Not set
+[0m[1m[32m	.1.. .... = Don't fragment:[0m[1m Set
+[0m[1m[32m	..0. .... = More fragments:[0m[1m Not set
+[0m[1m[32m	...0 0000 0000 0000 = Fragment Offset:[0m[1m 0
+[0m[1m[32m	Time to Live:[0m[1m 229
+[0m[1m[32m	Protocol:[0m[1m TCP (6)
+[0m[1m[32m	Header Checksum:[0m[1m 0x0936 [validation disabled]
+[0m[1m[32m	Header checksum status:[0m[1m Unverified
+[0m[1m[32m	Source Address:[0m[1m 54.165.12.65
+[0m[1m[32m	Destination Address:[0m[1m 192.168.12.145
+[0m[1m[33mLayer IP
+:[0m[1m[32m	0100 .... = Version:[0m[1m 4
+[0m[1m[32m	.... 0101 = Header Length:[0m[1m 20 bytes (5)
+[0m[1m[32m	Differentiated Services Field:[0m[1m 0x00 (DSCP: CS0, ECN: Not-ECT)
+[0m[1m[32m	0000 00.. = Differentiated Services Codepoint:[0m[1m Default (0)
+[0m[1m[32m	.... ..00 = Explicit Congestion Notification:[0m[1m Not ECN-Capable Transport (0)
+[0m[1m[32m	Total Length:[0m[1m 40
+[0m[1m[32m	Identification:[0m[1m 0x7d7a (32122)
+[0m[1m[32m	Flags:[0m[1m 0x40, Don't fragment
+[0m[1m[32m	0... .... = Reserved bit:[0m[1m Not set
+[0m[1m[32m	.1.. .... = Don't fragment:[0m[1m Set
+[0m[1m[32m	..0. .... = More fragments:[0m[1m Not set
+[0m[1m[32m	...0 0000 0000 0000 = Fragment Offset:[0m[1m 0
+[0m[1m[32m	Time to Live:[0m[1m 229
+[0m[1m[32m	Protocol:[0m[1m TCP (6)
+[0m[1m[32m	Header Checksum:[0m[1m 0x0836 [validation disabled]
+[0m[1m[32m	Header checksum status:[0m[1m Unverified
+[0m[1m[32m	Source Address:[0m[1m 54.165.12.65
+[0m[1m[32m	Destination Address:[0m[1m 192.168.12.145
+[0m
