@@ -34,6 +34,7 @@ class PortScanner:
         except socket.error:
             print("\n Server not responding")
             sys.exit()
+        self.write_file(open_ports)
         return open_ports
     
     def validate_ip_address(self,ip_string):
@@ -66,6 +67,14 @@ class PortScanner:
     def join_threads(self,threds):
         for i in range(self.min-1, self.max-1):
             threds[i].join()
+
+    def write_file(self, open_ports):
+        file = open('ports.txt', 'a')
+        for port in open_ports:
+            file.write(str(port))
+            file.write('\n')
+        file.close()
+
 
 if __name__ == "__main__":
     target = input("Enter target address: ")
