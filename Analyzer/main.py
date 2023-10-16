@@ -1,9 +1,11 @@
-import pcapkit
+# import pcapkit
 import pyshark
 import socket
 import netifaces as ni
 #import scapy as sc
 from scapy.all import IFACES
+import psutil
+
 
 
 
@@ -15,7 +17,7 @@ class InvalidChoice(Exception):
 
 class Analyze:
 
-    def __init__(self, read_file):
+    def __init__(self, read_file='./scan_result.pcap'):
         self.interface = self.get_net_interface()
         self.file = read_file
 
@@ -119,10 +121,9 @@ class main:
             break
 
     print("sniffing")
-    live = pyshark.LiveCapture(output_file='./scan_result.pcap').sniff(packet_count=sniff_length)
-    # live.sniff(packet_count=sniff_length)
+    a1 = Analyze()
+    live = pyshark.LiveCapture(interface= a1.interface[0],output_file='./scan_result.pcap').sniff(packet_count=sniff_length)
     print("done sniffing")
-    a1 = Analyze('./scan_result.pcap')
     a1.tcp_scan()
     a1.udp_scan()
     
