@@ -118,9 +118,10 @@ class main:
         else:
             break
 
+    print("sniffing")
     live = pyshark.LiveCapture(output_file='./scan_result.pcap').sniff(packet_count=sniff_length)
     # live.sniff(packet_count=sniff_length)
-
+    print("done sniffing")
     a1 = Analyze('./scan_result.pcap')
     a1.tcp_scan()
     a1.udp_scan()
