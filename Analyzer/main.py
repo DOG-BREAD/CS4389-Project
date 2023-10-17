@@ -2,6 +2,7 @@ import pyshark
 import socket
 import netifaces as ni
 from scapy.all import IFACES
+import pandas as pd
 
 SCAN_FILE = './scan_result.pcap'
 
@@ -58,50 +59,54 @@ class Analyze:
         dst = f'ip.dst=={self.interface[1]} && tcp'
         print(dst)
         tcp_cap = pyshark.FileCapture(input_file=read_file, display_filter=dst)
-        pack_count = 0
-        
-        #figure out better format for saving files to text for long term analysis
-        tcp_file = open('./tcp_traffic.txt', 'a')
-        while True:
-            try:
-                x = tcp_cap.next()
-                # print(x.ip)
-                tcp_file.write(str(x.ip))
-                pack_count+=1
-            except StopIteration:
-                break
 
-            try:
-                print(x.ip, '\n')
-            except AttributeError:
-                pass
-        print('TCP packets: ', pack_count)
-        tcp_file.close()
+        data = []
+
+        for packet in tcp_cap:
+            data.append({
+                'source': packet.ip.src,
+                'src-port': packet.tcp.srcport,
+                'destination': packet.ip.dst,
+                'dst-port': packet.tcp.dstport,
+                'protocol': packet.transport_layer,
+                'length': packet.length,
+                'time': packet.sniff_time,
+            })
+
+        df = pd.DataFrame(data)
+        print(df.head())
+        # print(df.groupby(['source']))
+        f = open('panda_write_tcp.txt', 'a')
+        f.write(df.to_string())
+        f.close()
+
 
     def udp_scan(self, read_file):
         print(f"getting UDP traffic data on interface {self.interface[0]} (IP: {self.interface[1]})")
         dst = f'ip.dst=={self.interface[1]} && udp'
         print(dst)
-        udp_cap = pyshark.FileCapture(input_file=read_file, display_filter=dst, output_file="test.xml")
-        pack_count = 0
+        udp_cap = pyshark.FileCapture(input_file=read_file, display_filter=dst)
         
-        #figure out better format for saving files to text for long term analysis
-        udp_file = open('./udp_traffic.txt', 'a')
-        while True:
-            try:
-                x = udp_cap.next()
-                udp_file.write(str(x.ip))
-                # print(x.ip)
-                pack_count+=1
-            except StopIteration:
-                break
+        data = []
 
-            try:
-                print(x.ip, '\n')
-            except AttributeError:
-                pass
-        print('UDP packets: ', pack_count)
-        udp_file.close()
+        for packet in udp_cap:
+            data.append({
+                'source': packet.ip.src,
+                'src-port': packet.udp.srcport,
+                'destination': packet.ip.dst,
+                'dst-port': packet.udp.dstport,
+                'protocol': packet.transport_layer,
+                'length': packet.length,
+                'time': packet.sniff_time,             
+            })
+
+        df = pd.DataFrame(data)
+        print(df.head())
+        # print(df.groupby(['source']))
+        
+        f = open('panda_write_udp.txt', 'a')
+        f.write(df.to_string())
+        f.close()
 
 
 class main:
@@ -119,8 +124,9 @@ class main:
     print(f"sniffing for {sniff_length} packets")
     live = pyshark.LiveCapture(interface= a1.interface[0],output_file=SCAN_FILE).sniff(timeout=sniff_length)
     print("done sniffing")
+    
     a1.tcp_scan(SCAN_FILE)
-    a1.udp_scan(SCAN_FILE)
+    # a1.udp_scan(SCAN_FILE)
     
 
 if __name__=="__main__":
