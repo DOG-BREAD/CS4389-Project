@@ -18,6 +18,7 @@ def parse_pcap_with_regex(file_path, pattern):
 
 
 # packets = enumerate(scapy.rdpcap('test.pcap'))
+file = open('plain.txt', 'a')
 
 #load the file into list format 
 packets = scapy.rdpcap('scan_result.pcap')
@@ -26,7 +27,11 @@ for x, pack in enumerate(packets):
     #enumerated packet number , packet information and delta from start time
     pack_str = f'packet#{x}: {str(pack)} time:{str(pack.time - start_time)}'
     print(pack_str)
+    file.write(pack_str)
+    file.write("\n")
 
+#close the file 
+file.close
 # testfile = open('./test.txt', 'a')
 # pack_count = 0
 # while True:
