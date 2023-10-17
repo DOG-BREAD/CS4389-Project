@@ -25,7 +25,7 @@ packets = scapy.rdpcap('scan_result.pcap')
 start_time = packets[0].time # start packet time
 for x, pack in enumerate(packets):
     #enumerated packet number , packet information and delta from start time
-    pack_str = f'packet#{x}: {str(pack)} time:{str(pack.time - start_time)}'
+    pack_str = f'packet#{x}: {str(pack)} time:{str(pack.time - start_time) }'
     print(pack_str)
     file.write(pack_str)
     file.write("\n")
