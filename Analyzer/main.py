@@ -82,7 +82,7 @@ class Analyze:
         print(f"getting UDP traffic data on interface {self.interface[0]} (IP: {self.interface[1]})")
         dst = f'ip.dst=={self.interface[1]} && udp'
         print(dst)
-        udp_cap = pyshark.FileCapture(input_file=read_file, display_filter=dst)
+        udp_cap = pyshark.FileCapture(input_file=read_file, display_filter=dst, output_file="test.xml")
         pack_count = 0
         
         #figure out better format for saving files to text for long term analysis
