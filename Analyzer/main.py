@@ -110,14 +110,14 @@ class main:
 
     while True:
         try:
-            sniff_length = int(input("How many packets do you want to capture? "))
+            sniff_length = int(input("How long (seconds) do you want to capture? "))
         except ValueError:
             print('Please input numeric value only.\n')
         else:
             break
 
     print(f"sniffing for {sniff_length} packets")
-    live = pyshark.LiveCapture(interface= a1.interface[0],output_file=SCAN_FILE).sniff(packet_count=sniff_length)
+    live = pyshark.LiveCapture(interface= a1.interface[0],output_file=SCAN_FILE).sniff(timeout=sniff_length)
     print("done sniffing")
     a1.tcp_scan(SCAN_FILE)
     a1.udp_scan(SCAN_FILE)

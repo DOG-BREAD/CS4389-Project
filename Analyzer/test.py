@@ -1,6 +1,7 @@
 import pyshark
 import scapy.all as scapy
 
+# parse the pcap file with regex --> later
 def parse_pcap_with_regex(file_path, pattern):
     packets = scapy.rdpcap(file_path)
 
@@ -16,15 +17,13 @@ def parse_pcap_with_regex(file_path, pattern):
             print(match)
 
 
-testcap =  pyshark.LiveCapture(interface='Wi-Fi', output_file='test.pcap')
-testcap.sniff(timeout=3)
+# packets = enumerate(scapy.rdpcap('test.pcap'))
 
-packets = enumerate(scapy.rdpcap('test.pcap'))
-# packets = scapy.rdpcap('test.pcap')
-start_time = packets.__next__[1].time
-
-for x, pack in packets:
-
+#load the file into list format 
+packets = scapy.rdpcap('scan_result.pcap')
+start_time = packets[0].time # start packet time
+for x, pack in enumerate(packets):
+    #enumerated packet number , packet information and delta from start time
     pack_str = f'packet#{x}: {str(pack)} time:{str(pack.time - start_time)}'
     print(pack_str)
 
