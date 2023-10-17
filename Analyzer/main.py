@@ -1,13 +1,9 @@
-# import pcapkit
 import pyshark
 import socket
 import netifaces as ni
-#import scapy as sc
 from scapy.all import IFACES
-import psutil
 
-
-
+SCAN_FILE = './scan_result.pcap'
 
 class InvalidChoice(Exception):
     def __init__(self, message):
@@ -16,10 +12,8 @@ class InvalidChoice(Exception):
         return f"Cannot find host: '{self.message}'"
 
 class Analyze:
-
-    def __init__(self, read_file='./scan_result.pcap'):
+    def __init__(self):
         self.interface = self.get_net_interface()
-        self.file = read_file
 
     # Method within Analyze to choose which network interface on a device to listen to.
     # Made for devices with multiple interfaces (i.e. has VM network adapters)
@@ -58,12 +52,12 @@ class Analyze:
         print(f"Chosen interface is '{select[ifchoice][0]}' with IP: {select[ifchoice][1]}")
         return select[ifchoice]
 
-    def tcp_scan(self):
+    def tcp_scan(self, read_file):
         print(f"getting TCP traffic data on interface {self.interface[0]} (IP: {self.interface[1]})")
 
         dst = f'ip.dst=={self.interface[1]} && tcp'
         print(dst)
-        tcp_cap = pyshark.FileCapture(input_file=self.file, display_filter=dst)
+        tcp_cap = pyshark.FileCapture(input_file=read_file, display_filter=dst)
         pack_count = 0
         
         #figure out better format for saving files to text for long term analysis
@@ -84,11 +78,11 @@ class Analyze:
         print('TCP packets: ', pack_count)
         tcp_file.close()
 
-    def udp_scan(self):
+    def udp_scan(self, read_file):
         print(f"getting UDP traffic data on interface {self.interface[0]} (IP: {self.interface[1]})")
         dst = f'ip.dst=={self.interface[1]} && udp'
         print(dst)
-        udp_cap = pyshark.FileCapture(input_file=self.file, display_filter=dst)
+        udp_cap = pyshark.FileCapture(input_file=read_file, display_filter=dst)
         pack_count = 0
         
         #figure out better format for saving files to text for long term analysis
@@ -112,6 +106,8 @@ class Analyze:
 
 class main:
 
+    a1 = Analyze()
+
     while True:
         try:
             sniff_length = int(input("How many packets do you want to capture? "))
@@ -120,12 +116,11 @@ class main:
         else:
             break
 
-    print("sniffing")
-    a1 = Analyze()
-    live = pyshark.LiveCapture(interface= a1.interface[0],output_file='./scan_result.pcap').sniff(packet_count=sniff_length)
+    print(f"sniffing for {sniff_length} packets")
+    live = pyshark.LiveCapture(interface= a1.interface[0],output_file=SCAN_FILE).sniff(packet_count=sniff_length)
     print("done sniffing")
-    a1.tcp_scan()
-    a1.udp_scan()
+    a1.tcp_scan(SCAN_FILE)
+    a1.udp_scan(SCAN_FILE)
     
 
 if __name__=="__main__":
