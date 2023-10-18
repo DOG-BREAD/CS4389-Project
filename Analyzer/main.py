@@ -130,10 +130,11 @@ class Analyze:
             last_scan = df_sorted.iloc[-1]
             first_scan_time = first_scan['time']
             last_scan_time = last_scan['time']
+            
             # Format of date string
             date_format = "%Y-%m-%d %H:%M:%S.%f"
-            start_time = datetime.strptime(first_scan_time, date_format)
-            end_time = datetime.strptime(last_scan_time, date_format)
+            start_time = datetime.strptime(str(first_scan_time), date_format)
+            end_time = datetime.strptime(str(last_scan_time), date_format)
             scan_duration = end_time - start_time
             print(f"Scan Duration: {scan_duration}")
             print(f'Number Of Packets Sent: {len(filtered_df)}')
@@ -141,8 +142,27 @@ class Analyze:
             print(f'List of ports scanned: \n{unique_ports_df}')
 
     def find_suspicious_ip(self, file="scan_result.pcap", ip='127.0.0.1'):
-        dst = f'ip.dst=={self.interface[1]}'
+        dst = f'ip.dst=={ip}'
+        print(f'{dst}')
         cap = pyshark.FileCapture(input_file=file, display_filter=dst)
+        data = []
+        for packet in cap:
+            dst_port = 0
+            print(packet)
+            
+        #     print(f'DST PORT = {dst_port}')
+        #     # data.append({
+        #     #     'source': packet.ip.src,
+        #     #     # 'src-port': packet.tcp.srcport,
+        #     #     'destination': packet.ip.dst,
+        #     #     'dst-port': dst_port,
+        #     #     'protocol': packet.transport_layer,
+        #     #     'length': packet.length,
+        #     #     'time': packet.sniff_time,
+        #     # })
+        # #print(len(data))
+        # df = pd.DataFrame(data)
+        # print(df)
 
 
 class main:
@@ -159,11 +179,11 @@ class main:
     live = pyshark.LiveCapture(interface= a1.interface[0],output_file=SCAN_FILE).sniff(timeout=sniff_length)
     print("done sniffing")
     
-    #a1.tcp_scan(SCAN_FILE)
-    #a1.udp_scan(SCAN_FILE)
+    a1.tcp_scan(SCAN_FILE)
+    a1.udp_scan(SCAN_FILE)
+    # a1.find_suspicious_ip(ip=a1.interface[1])
     sus_ip = '172.23.150.111'
-    a1.find_suspicious_ip(ip=a1.interface[0])
-    #a1.analyze_ip("tcp_udp_scan.csv", sus_ip)
+    a1.analyze_ip("tcp_udp_scan.csv", sus_ip)
     
 
 if __name__=="__main__":
