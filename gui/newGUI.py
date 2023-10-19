@@ -10,7 +10,7 @@ def main():
     root.geometry("800x600")
     
     #load background pic
-    background_image = PhotoImage(file="tron_tunnels.png")
+    background_image = PhotoImage(file="gui/tron_tunnels.png")
 
     #Use a modern theme
     style = ttk.Style()
@@ -25,7 +25,7 @@ def main():
     style.configure("TButton", padding=10, background="purple", foreground="red")
 
     # Icon for the window
-    root.iconphoto(True, PhotoImage(file="guy.png"))
+    root.iconphoto(True, PhotoImage(file="gui/guy.png"))
     
     # Buttons
     exit_button = ttk.Button(root, text="Exit", command=root.quit, style="TButton")
@@ -47,7 +47,7 @@ def scanCallBack():
     message.config(bg="#282c34")  # Use the same background color as in the main function
     
     #background_image
-    background_image = PhotoImage(file="2nd.png")
+    background_image = PhotoImage(file="gui/2nd.png")
 
     message_label = Label(message, text="Scanning", bg='#282c34', fg='white') 
     message_label.pack(pady=10)
@@ -85,7 +85,7 @@ def attackCallBack():
     message.config(bg="#282c34")
 
     #global attack_Image
-    attack_Image = PhotoImage(file="2nd.png")
+    attack_Image = PhotoImage(file="gui/2nd.png")
 
     message_label = Label(message, text="would you like to counter attack?", bg='#282c34', fg='white')
     message_label.pack(pady=10)

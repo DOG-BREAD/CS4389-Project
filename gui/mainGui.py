@@ -32,7 +32,7 @@ root = tk.Tk()
 root.title("Port Scanner")
 root.geometry("600x400")
 
-background_image = tk.PhotoImage(file="hack.png")
+background_image = tk.PhotoImage(file="gui/hack.png")
 background_label = tk.Label(root, image=background_image)
 background_label.place(relwidth=1, relheight=1)
 
