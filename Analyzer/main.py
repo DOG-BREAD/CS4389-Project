@@ -180,6 +180,5 @@ class main:
     a1.udp_scan(SCAN_FILE)
     a1.find_suspicious_ip(ip=a1.interface[1])
     
-
 if __name__=="__main__":
     main()
