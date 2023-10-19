@@ -147,22 +147,9 @@ class Analyze:
         cap = pyshark.FileCapture(input_file=file, display_filter=dst)
         data = []
         for packet in cap:
-            dst_port = 0
             print(packet)
             
-        #     print(f'DST PORT = {dst_port}')
-        #     # data.append({
-        #     #     'source': packet.ip.src,
-        #     #     # 'src-port': packet.tcp.srcport,
-        #     #     'destination': packet.ip.dst,
-        #     #     'dst-port': dst_port,
-        #     #     'protocol': packet.transport_layer,
-        #     #     'length': packet.length,
-        #     #     'time': packet.sniff_time,
-        #     # })
-        # #print(len(data))
-        # df = pd.DataFrame(data)
-        # print(df)
+        
 
 
 class main:
@@ -181,9 +168,8 @@ class main:
     
     a1.tcp_scan(SCAN_FILE)
     a1.udp_scan(SCAN_FILE)
-    # a1.find_suspicious_ip(ip=a1.interface[1])
-    sus_ip = '172.23.150.111'
-    a1.analyze_ip("tcp_udp_scan.csv", sus_ip)
+    #a1.find_suspicious_ip(ip=a1.interface[1])
+    #a1.analyze_ip("tcp_udp_scan.csv", sus_ip)
     
 
 if __name__=="__main__":
