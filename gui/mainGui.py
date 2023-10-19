@@ -1,88 +1,57 @@
-from tkinter import *
-from tkinter import ttk
-import time
+import tkinter as tk
+from tkinter import ttk, simpledialog
+import ipaddress
 
-def main():
-    root = Tk()
-    root.title('Port Scanner')
+def scan_ip(ip_address):
+    progress_window = tk.Toplevel(root)
+    progress_window.title("Scanning Progress")
+    progress_window.geometry("300x150")
+    
+    progress_label = tk.Label(progress_window, text=f"Scanning {ip_address}...", font=("Helvetica", 20))
+    progress_label.pack(pady=10)
+    progress_bar = ttk.Progressbar(progress_window, orient='horizontal', mode='indeterminate', length=100)
+    progress_bar.pack()
+    progress_bar.start(3)
+    
 
-    # Adjust size of the window
-    root.geometry("800x600")
-    root.configure(bg="#E63946")
+def scan_port():
+    ip_address = simpledialog.askstring("Enter IP Address", "Please enter the IP address:")
+    
+    if ip_address is not None:
+        try:
+            ipaddress.ip_address(ip_address)
+            scan_ip(ip_address)
+        except ValueError:
+            error_label = tk.Label(simpledialog._dialog_window, text="Invalid IP address format. Please try again.", fg="red")
+            error_label.pack(pady=5)
 
-    #style for buttons
-    # style=Style()
-    # style.configure()
+def attack_target():
+    pass
 
-    #scanning 
-    def scanCallBack():
-        global message
-        message = Toplevel(root) # makes a pop up infront of other windows at root level
-        message.title("Scanning")
-        message.geometry("400x300")
-        message.config(bg="black")
+root = tk.Tk()
+root.title("Port Scanner")
+root.geometry("600x400")
 
-        
-        message_label = Label(message, text = "Scanning", bg='white')
-        message_label.pack(pady = 10)
+background_image = tk.PhotoImage(file="gui/hack.png")
+background_label = tk.Label(root, image=background_image)
+background_label.place(relwidth=1, relheight=1)
 
-        message_frame = Frame(message)
-        message_frame.pack(pady=5)
-        #progress bar needed below 
+title_label = tk.Label(root, text="PORT SCANNER", font=("Helvetica", 36, "bold"), highlightbackground="black", highlightthickness=5)
+title_label.pack(pady=(40, 20))
 
-        pb = ttk.Progressbar(message, orient='horizontal',mode='indeterminate',length=100)
-        pb.pack()
-        pb.start(3)
+button_font = ("Helvetica", 24,'bold', 'underline')
 
-        stopScanning = Button(message, text="exit",command = message.destroy)
-        stopScanning.pack()
 
-        
-        #needs frame inside to display scan data 
 
-#############################################################################################################
-   
-   
-    #Attack sensed , pop up window for interaction
-    def yesAttack():
-            print("hi")
-        #attack function for Yes_button
-    def attackCallBack():
-        global message
-        message = Toplevel(root) # makes a pop up infront of other windows at root level
-        message.title("sus attack")
-        message.geometry("1920x1080")
-        message.config(bg="black")
+scan_button = tk.Button(root, text="Scan", command=scan_port, font=button_font,foreground="black", width=20)
+attack_button = tk.Button(root, text="Attack", command=attack_target, font=button_font,foreground="black", width=20)
+exit_button = tk.Button(root, text="Exit", command=root.quit, font=button_font,foreground="black", width=20)
 
-        global attack_Image # needs global to be accessed outside of def
-        attack_Image = PhotoImage(file= "gui/pngegg.png")
+scan_button.pack(pady=10)
+attack_button.pack(pady=10)
+exit_button.pack(pady=10)
 
-        message_label = Label(message, text = "would you like to counter attack?", bg='white')
-        message_label.pack(pady = 10)
+root.grid_rowconfigure(0, weight=1)
+root.grid_columnconfigure(0, weight=1)
 
-        message_frame = Frame(message)
-        message_frame.pack(pady=5)
-
-        image = Label(message_frame, image=attack_Image )
-        image.pack()
-        
-        Yes_button = Button(message, text="Yes!",command = yesAttack )
-        Yes_button.place(relx =0.01, rely=0.1, anchor=NW, width=30, height= 30)
-        No_button = Button(message, text="No!",command = message.destroy)
-        No_button.place(relx =0.01, rely=0.5, anchor=NW , width=30, height= 30)
-        #needs to launch attack and show whats done , close window and go back to main skeleton frame
-        
-
- 
-###################################################################################################################3
-    exit_button = Button(root, text="Exit", command=root.quit)
-    exit_button.place(relx=0.01, rely =0.01, anchor=NW)
-    scan_button = Button(root, text="Scan Ports", command = scanCallBack)
-    scan_button.place(relx =0.01, rely=0.05, anchor=NW)
-    attack_button = Button(root, text="Attack!",command = attackCallBack )
-    attack_button.place(relx =0.01, rely=0.1, anchor=NW)
-
-    root.mainloop()
-
-if __name__=="__main__":
-    main()
+root.mainloop()
