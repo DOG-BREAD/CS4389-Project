@@ -4,6 +4,7 @@ CS4389 Semester Project
 Python requirements - Python 3.11 or newer
 
 We recommend creating a virtual environment and utilizing our requirements.txt 
+
 ```pip install -r requirements.txt```
 
 GUI
