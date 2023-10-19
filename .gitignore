@@ -1,7 +1,7 @@
 venv/
 .conda/
 ports.txt/
-scan_result.pcap
+scan_result.pcap/
 tcp_traffic.txt
 udp_traffic.txt
 test.pcap

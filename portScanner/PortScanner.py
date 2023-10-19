@@ -4,7 +4,7 @@ import ipaddress
 from datetime import datetime
 
 class PortScanner: 
-    def __init__(self, min = 1, max = 1025):
+    def __init__(self, min = 1, max = 65535):
         self.min = min
         self.max = max
 
