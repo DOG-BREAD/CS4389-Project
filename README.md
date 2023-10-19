@@ -24,3 +24,9 @@ PortScanning
 ```python portScanner/PortScanner.py```
 
 Will scan all ports for IP address entered and store it in a list.
+
+#Future Additions
+Additional scan technique detection: analysis techniques such as syn flood attack detection and response.
+Data visualization of analysis and scanning results.
+GUI integrations with analysis and scanning.
+
