@@ -7,7 +7,10 @@ We recommend creating a virtual environment and utilizing our requirements.txt
 ```pip install -r requirements.txt```
 
 GUI
-```python gui/mainGui.py``````python gui/newGUI.py```
+
+```python gui/mainGui.py```
+
+```python gui/newGUI.py```
 
 Analysis
 ```python Analyzer/main.py```
