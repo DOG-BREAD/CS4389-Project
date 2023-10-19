@@ -1,7 +1,7 @@
 venv/
 .conda/
-ports.txt/
-scan_result.pcap/
+ports.txt
+scan_result.pcap
 tcp_traffic.txt
 udp_traffic.txt
 test.pcap
@@ -11,4 +11,5 @@ panda_write_tcp.txt
 panda_write_udp.txt
 tcp_udp_scan.csv
 .env
+
 
