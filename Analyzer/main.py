@@ -11,8 +11,6 @@ import time
 from dotenv import load_dotenv
 load_dotenv()
 SCAN_FILE = './scan_result.pcap'
-# SUS_IP = os.getenv('SUS_IP')
-
 
 class InvalidChoice(Exception):
     def __init__(self, message):
@@ -119,6 +117,8 @@ class Analyze:
             pass
         f.close()
 
+    # Analyzes the specified IP address for possible port scanning
+    # Calculates the duration of the scan, number of packets sent, and number of unique ports scanned
     def analyze_ip(self, file="tcp_udp_scan.csv", ip='127.0.0.1'):
         df = pd.read_csv(file)
         # Filter the DataFrame based on 'source' IP (Attacker)
@@ -146,9 +146,9 @@ class Analyze:
             print(f'Number Of Unique Ports Scanned: {len(unique_ports)}')
             print(f'List of ports scanned: \n{unique_ports_df}\n')
 
-    # Gets the unique IP addresses that sent packets to the specified IP address
-    # If the unique IP sent more than 100 packets, it is considered suspicious
-    # If the unique number of ports scanned is more than 10, it will be analyzed for possible port scanning
+    # Gets the unique IP addresses that sent packets to the specified host
+    # If the IP sent more than 100 packets or scanned more than 10 unique ports, it is considered suspicious
+    # All suspicious ips will be analyzed for possible port scanning
     def find_suspicious_ip(self, file="scan_result.pcap", ip='127.0.0.1'):  
         df = pd.read_csv("tcp_udp_scan.csv")
         unique_ip = df['source'].unique().tolist()
@@ -159,10 +159,6 @@ class Analyze:
         for _ip in unique_ip:
             filtered_df = df[df['source'] == _ip]
             unique_ports = filtered_df['dst-port'].unique()
-            # print(f"[{_ip}] Number Of Packets Sent: {len(filtered_df)}")
-            # print(f"[{_ip}] Number Of Unique Ports Scanned: {len(unique_ports)}")
-            # print(f"[{_ip}] List of ports scanned: \n{unique_ports}")
-            # print("--------------------------------------")
             if (len(filtered_df) > 100) or (len(unique_ports) > 10):
                 self.analyze_ip(ip=_ip)
             
