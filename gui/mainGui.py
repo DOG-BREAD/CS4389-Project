@@ -41,14 +41,11 @@ title_label.pack(pady=(40, 20))
 
 button_font = ("Helvetica", 24,'bold', 'underline')
 
-button_style = ttk.Style()
-button_style.configure("Scan.TButton", font=button_font, background="green", foreground="white")
-button_style.configure("Attack.TButton", font=button_font, background="red", foreground="white")
-button_style.configure("Exit.TButton", font=button_font, background="blue", foreground="white")
 
-scan_button = ttk.Button(root, text="Scan", command=scan_port, style='Scan.TButton', width=20)
-attack_button = ttk.Button(root, text="Attack", command=attack_target, style='Attack.TButton', width=20)
-exit_button = ttk.Button(root, text="Exit", command=root.quit, style='Exit.TButton', width=20)
+
+scan_button = tk.Button(root, text="Scan", command=scan_port, font=button_font,foreground="black", width=20)
+attack_button = tk.Button(root, text="Attack", command=attack_target, font=button_font,foreground="black", width=20)
+exit_button = tk.Button(root, text="Exit", command=root.quit, font=button_font,foreground="black", width=20)
 
 scan_button.pack(pady=10)
 attack_button.pack(pady=10)
