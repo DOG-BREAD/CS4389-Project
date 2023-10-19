@@ -43,6 +43,7 @@ button_font = ("Helvetica", 24,'bold', 'underline')
 
 
 
+<<<<<<< HEAD
 scan_button = tk.Button(root, text="Scan", command=scan_port, font=button_font,foreground="black", width=20)
 attack_button = tk.Button(root, text="Attack", command=attack_target, font=button_font,foreground="black", width=20)
 exit_button = tk.Button(root, text="Exit", command=root.quit, font=button_font,foreground="black", width=20)
@@ -50,6 +51,26 @@ exit_button = tk.Button(root, text="Exit", command=root.quit, font=button_font,f
 scan_button.pack(pady=10)
 attack_button.pack(pady=10)
 exit_button.pack(pady=10)
+=======
+#############################################################################################################
+   
+   
+    #Attack sensed , pop up window for interaction
+    def yesAttack():
+            print("hi")
+
+
+        #attack function for Yes_button
+    def attackCallBack():
+        global message
+        message = Toplevel(root) # makes a pop up infront of other windows at root level
+        message.title("sus attack")
+        message.geometry("1920x1080")
+        message.config(bg="black")
+
+        global attack_Image # needs global to be accessed outside of def
+        attack_Image = PhotoImage(file= "gui/guy.png")
+>>>>>>> Analysis
 
 root.grid_rowconfigure(0, weight=1)
 root.grid_columnconfigure(0, weight=1)
