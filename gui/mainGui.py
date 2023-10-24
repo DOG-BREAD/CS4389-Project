@@ -3,6 +3,7 @@ from tkinter import ttk, simpledialog
 import ipaddress
 import subprocess
 import threading
+import netifaces 
 
 # endthread=False
 def destroy(x):
@@ -52,6 +53,27 @@ def scan_port():
             error_label = tk.Label(simpledialog._dialog_window, text="Invalid IP address format. Please try again.", fg="red")
             error_label.pack(pady=5)
 
+def analyze():
+    analyz = subprocess.run(['python', 'Analyzer/main.py'],shell=True)
+
+def analyzeWindow():
+    progress_window = tk.Toplevel(root)
+    progress_window.title("Analyze")
+    progress_window.geometry("400x250")
+    
+    progress_label = tk.Label(progress_window, text=f"Analyzing", font=("Helvetica", 20))
+    progress_label.pack(pady=10)
+    progress_bar = ttk.Progressbar(progress_window, orient='horizontal', mode='indeterminate', length=100)
+    progress_bar.pack()
+    progress_bar.start(3)
+
+    thread = threading.Thread(target=analyze,daemon=True)
+    thread.start()
+
+
+
+    root.mainloop()
+    
 def attack_target():
     pass
 
@@ -71,7 +93,7 @@ button_font = ("Helvetica", 24,'bold', 'underline')
 
 
 scan_button = tk.Button(root, text="Scan", command=scan_port, font=button_font,foreground="black", width=20)
-attack_button = tk.Button(root, text="Attack", command=attack_target, font=button_font,foreground="black", width=20)
+attack_button = tk.Button(root, text="Analyze", command=analyzeWindow, font=button_font,foreground="black", width=20)
 exit_button = tk.Button(root, text="Exit", command=root.quit, font=button_font,foreground="black", width=20)
 
 scan_button.pack(pady=10)
