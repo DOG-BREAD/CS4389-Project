@@ -4,6 +4,7 @@ import ipaddress
 import subprocess
 import threading
 import netifaces 
+# from Analyzer.main import *
 
 # endthread=False
 def destroy(x):
@@ -43,18 +44,13 @@ def scan_port():
             
             thread = threading.Thread(target=scan_ip, args=[ip_address],daemon=True)
             thread.start()
-            
-            # scan_ip(ip_address)
-                
-            
-            # endthread=True
-            
+ 
         except ValueError:
             error_label = tk.Label(simpledialog._dialog_window, text="Invalid IP address format. Please try again.", fg="red")
             error_label.pack(pady=5)
 
 def analyze():
-    analyz = subprocess.run(['python', 'Analyzer/main.py'],shell=True)
+    interfaces = simpledialog.askstring(f"Select Network Interface")
 
 def analyzeWindow():
     progress_window = tk.Toplevel(root)
