@@ -37,25 +37,26 @@ def get_net_interface():
         except:
             pass
     # enumerate the select list and convert to a dictionary        
-    select = dict(enumerate(select))
+    # select = dict(enumerate(select))
     
-    while True:
-        print('\nChoose your interface to analyze by index below:')
-        for x in select:
-            print(f'{x} : {select[x][0]}')
-        try:
-            ifchoice = int(input('Choose an interface index value: '))
-            if ifchoice in select.keys():
-                break
-            else:
-                raise InvalidChoice('Invalid choice for interface select.')
-        except InvalidChoice:
-            print(f"'{ifchoice}' is not a valid index on the interface list.\n")
-        except ValueError:
-            print('Please input numeric value only.\n')
+    # while True:
+    #     print('\nChoose your interface to analyze by index below:')
+    #     for x in select:
+    #         print(f'{x} : {select[x][0]}')
+    #     try:
+    #         ifchoice = int(input('Choose an interface index value: '))
+    #         if ifchoice in select.keys():
+    #             break
+    #         else:
+    #             raise InvalidChoice('Invalid choice for interface select.')
+    #     except InvalidChoice:
+    #         print(f"'{ifchoice}' is not a valid index on the interface list.\n")
+    #     except ValueError:
+    #         print('Please input numeric value only.\n')
     
-    print(f"Chosen interface is '{select[ifchoice][0]}' with IP: {select[ifchoice][1]}")
-    return select[ifchoice]
+    # print(f"Chosen interface is '{select[ifchoice][0]}' with IP: {select[ifchoice][1]}")
+    # return select[ifchoice]
+    return select
 
 def tcp_scan(inter, read_file):
     print(f"\ngetting TCP traffic data on interface {inter[0]} (IP: {inter[1]})")
@@ -153,8 +154,11 @@ def find_suspicious_ip(file="scan_result.pcap", ip='127.0.0.1'):
         unique_ports = filtered_df['dst-port'].unique()
         if (len(filtered_df) > 100) or (len(unique_ports) > 10):
             analyze_ip(ip=_ip)
+
+def test():
+    print("test")
         
-class main:
+def main():
     sniff_length = 20
     inter = get_net_interface()
     print(f"sniffing for {sniff_length} seconds")

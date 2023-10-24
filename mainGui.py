@@ -4,9 +4,10 @@ import ipaddress
 import subprocess
 import threading
 import netifaces 
-# from Analyzer.main import *
+# import Analyzer.main as ass
+from Analyzer.main import *
 
-# endthread=False
+
 def destroy(x):
     x.destroy()
     return
@@ -51,6 +52,9 @@ def scan_port():
 
 def analyze():
     interfaces = simpledialog.askstring(f"Select Network Interface")
+    x = get_net_interface()
+    print(x)
+
 
 def analyzeWindow():
     progress_window = tk.Toplevel(root)
@@ -73,32 +77,37 @@ def analyzeWindow():
 def attack_target():
     pass
 
-root = tk.Tk()
-root.title("Port Scanner")
-root.geometry("600x400")
+def main():
+    global root
+    root = tk.Tk()
+    root.title("Port Scanner")
+    root.geometry("600x400")
 
-background_image = tk.PhotoImage(file="gui/hack.png")
-background_label = tk.Label(root, image=background_image)
-background_label.place(relwidth=1, relheight=1)
+    background_image = tk.PhotoImage(file="gui/hack.png")
+    background_label = tk.Label(root, image=background_image)
+    background_label.place(relwidth=1, relheight=1)
 
-title_label = tk.Label(root, text="PORT SCANNER", font=("Helvetica", 36, "bold"), highlightbackground="black", highlightthickness=5)
-title_label.pack(pady=(40, 20))
+    title_label = tk.Label(root, text="PORT SCANNER", font=("Helvetica", 36, "bold"), highlightbackground="black", highlightthickness=5)
+    title_label.pack(pady=(40, 20))
 
-button_font = ("Helvetica", 24,'bold', 'underline')
-
-
-
-scan_button = tk.Button(root, text="Scan", command=scan_port, font=button_font,foreground="black", width=20)
-attack_button = tk.Button(root, text="Analyze", command=analyzeWindow, font=button_font,foreground="black", width=20)
-exit_button = tk.Button(root, text="Exit", command=root.quit, font=button_font,foreground="black", width=20)
-
-scan_button.pack(pady=10)
-attack_button.pack(pady=10)
-exit_button.pack(pady=10)
+    button_font = ("Helvetica", 24,'bold', 'underline')
 
 
-root.grid_rowconfigure(0, weight=1)
-root.grid_columnconfigure(0, weight=1)
+
+    scan_button = tk.Button(root, text="Scan", command=scan_port, font=button_font,foreground="black", width=20)
+    attack_button = tk.Button(root, text="Analyze", command=analyzeWindow, font=button_font,foreground="black", width=20)
+    exit_button = tk.Button(root, text="Exit", command=root.quit, font=button_font,foreground="black", width=20)
+
+    scan_button.pack(pady=10)
+    attack_button.pack(pady=10)
+    exit_button.pack(pady=10)
 
 
-root.mainloop()
+    root.grid_rowconfigure(0, weight=1)
+    root.grid_columnconfigure(0, weight=1)
+
+
+    root.mainloop()
+
+if __name__ == "__main__":
+    main()
