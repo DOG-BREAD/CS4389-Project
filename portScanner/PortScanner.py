@@ -74,11 +74,14 @@ class PortScanner:
             file.write(str(port))
             file.write('\n')
         file.close()
+        return
 
 
 if __name__ == "__main__":
-    target = input("Enter target address: ")
+    # print("Enter target a")
+    target = sys.argv[1]
+    print(str(target))
     test = PortScanner()
     test.scan_ports(target)
-    
+    exit(0)
     

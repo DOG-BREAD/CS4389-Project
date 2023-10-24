@@ -1,8 +1,19 @@
 import tkinter as tk
 from tkinter import ttk, simpledialog
 import ipaddress
+import subprocess
+import threading
 
+# endthread=False
+def destroy(x):
+    x.destroy()
+    return
+
+def runPortScan(path, ip_address):
+    portScan = subprocess.run(['python', path, str(ip_address)])
+    
 def scan_ip(ip_address):
+
     progress_window = tk.Toplevel(root)
     progress_window.title("Scanning Progress")
     progress_window.geometry("300x150")
@@ -13,6 +24,14 @@ def scan_ip(ip_address):
     progress_bar.pack()
     progress_bar.start(3)
     
+    #start the port scanner thread 
+    thread2 = threading.Thread(target=runPortScan, args=['portScanner/PortScanner.py',ip_address])
+    thread2.start()
+    
+    #destroy after 40 seconds , call destroy method, pass the window
+    progress_window.after(40000,destroy,progress_window)
+    root.mainloop()
+
 
 def scan_port():
     ip_address = simpledialog.askstring("Enter IP Address", "Please enter the IP address:")
@@ -20,7 +39,15 @@ def scan_port():
     if ip_address is not None:
         try:
             ipaddress.ip_address(ip_address)
-            scan_ip(ip_address)
+            
+            thread = threading.Thread(target=scan_ip, args=[ip_address],daemon=True)
+            thread.start()
+            
+            # scan_ip(ip_address)
+                
+            
+            # endthread=True
+            
         except ValueError:
             error_label = tk.Label(simpledialog._dialog_window, text="Invalid IP address format. Please try again.", fg="red")
             error_label.pack(pady=5)
@@ -54,5 +81,6 @@ exit_button.pack(pady=10)
 
 root.grid_rowconfigure(0, weight=1)
 root.grid_columnconfigure(0, weight=1)
+
 
 root.mainloop()
