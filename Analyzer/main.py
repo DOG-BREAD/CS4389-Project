@@ -37,7 +37,7 @@ def get_net_interface():
         except:
             pass
     # enumerate the select list and convert to a dictionary        
-    # select = dict(enumerate(select))
+    select = dict(select)
     
     # while True:
     #     print('\nChoose your interface to analyze by index below:')

@@ -51,9 +51,22 @@ def scan_port():
             error_label.pack(pady=5)
 
 def analyze():
-    interfaces = simpledialog.askstring(f"Select Network Interface")
+    # interfaces = simpledialog.askstring("","Select Network Interface")
     x = get_net_interface()
-    print(x)
+    for key, val in x.items():
+        print(f'key = {key}, val = {val}')
+    
+    # print(x.keys())
+    # interfaceName= []
+    # interfaceIP = []
+    # for z in x:
+    #     interfaceName.append(z[0])
+    #     interfaceName.append(z[1])
+    # print(interfaceName)
+    # print(interfaceIP)
+    
+
+
 
 
 def analyzeWindow():
