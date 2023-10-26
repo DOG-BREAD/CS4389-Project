@@ -12,6 +12,7 @@ def destroy(x):
     return
 
 
+
 def runPortScan(path, ip_address):
     portScan = subprocess.run(['python', path, str(ip_address)])
     
@@ -49,9 +50,29 @@ def scan_port():
         except ValueError:
             error_label = tk.Label(simpledialog._dialog_window, text="Invalid IP address format. Please try again.", fg="red")
             error_label.pack(pady=5)
+interface_option = None
+def getInterface():
+    interfaces = get_net_interface()
+    interfaces = interfaces.values()
+    if interface_option is None:
+        dialog = tk.Toplevel(root)
+        def save_option(option):
+            global interface_option
+            dialog.destroy()
+            interface_option = option
+
+        # Create a button for each network interface
+        for interface in interfaces:
+            button = tk.Button(dialog, text=interface, command=lambda i=interface: save_option(i))
+            button.pack()
+        print(interface_option)
+    if interface_option is not None:
+        print(interface_option)
+        analyzeWindow()
+
 
 def analyze(tree):
-    # interfaces = simpledialog.askstring("","Select Network Interface")
+    interfaces = simpledialog.askstring("","Select Network Interface")
     x = get_net_interface()
     for key, val in x.items():
         print(f'key = {key}, val = {val}')
@@ -124,7 +145,7 @@ def main():
 
 
     scan_button = tk.Button(root, text="Scan", command=scan_port, font=button_font,foreground="black", width=20)
-    attack_button = tk.Button(root, text="Analyze", command=analyzeWindow, font=button_font,foreground="black", width=20)
+    attack_button = tk.Button(root, text="Analyze", command=getInterface, font=button_font,foreground="black", width=20)
     exit_button = tk.Button(root, text="Exit", command=root.quit, font=button_font,foreground="black", width=20)
 
     scan_button.pack(pady=10)
