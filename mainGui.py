@@ -55,7 +55,6 @@ def analyze(tree):
     x = get_net_interface()
     for key, val in x.items():
         print(f'key = {key}, val = {val}')
-    test()
     threat_list = get_threat_list()
     populate_treeview(threat_list, tree)
     
