@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 load_dotenv()
 SCAN_FILE = './scan_result.pcap'
 
-threat_list = pd.DataFrame(columns=['IP', 'First Packet Time', 'Last Packet Time','Duration', 'Min Port #','Max Port #', 'Number of Unique Ports'])
+threat_list = pd.DataFrame(columns=['IP', 'First Packet Time', 'Last Packet Time','Duration', 'Min Port #','Max Port #', 'Number of Unique Ports', 'Num Packets Sent'])
 
 class InvalidChoice(Exception):
     def __init__(self, message):
@@ -105,9 +105,9 @@ def analyze_ip(file="tcp_udp_scan.csv", ip='127.0.0.1'):
         start_time = datetime.strptime(str(first_scan_time), date_format)
         end_time = datetime.strptime(str(last_scan_time), date_format)
         scan_duration = end_time - start_time
-        print(f"Scan Duration: {scan_duration}")
-        print(f'Number Of Packets Sent: {len(filtered_df)}')
-        print(f'Number Of Unique Ports Scanned: {len(unique_ports)}')
+        # print(f"Scan Duration: {scan_duration}")
+        # print(f'Number Of Packets Sent: {len(filtered_df)}')
+        # print(f'Number Of Unique Ports Scanned: {len(unique_ports)}')
         # print(f'List of ports scanned: \n{unique_ports_df}\n')
         threat_list.loc[len(threat_list)] = [
             ip,
@@ -116,7 +116,8 @@ def analyze_ip(file="tcp_udp_scan.csv", ip='127.0.0.1'):
             scan_duration,
             unique_ports.min(),
             unique_ports.max(),
-            len(unique_ports)
+            len(unique_ports),
+            len(filtered_df)
         ]
         print(threat_list.head())
 
