@@ -6,11 +6,12 @@ import pandas as pd
 from datetime import datetime
 import subprocess
 import os
-import signal
 import time
 from dotenv import load_dotenv
 load_dotenv()
 SCAN_FILE = './scan_result.pcap'
+
+threat_list = pd.DataFrame(columns=['IP', 'First Packet Time', 'Last Packet Time','Duration', 'Min Port #','Max Port #', 'Number of Unique Ports', 'Num Packets Sent'])
 
 class InvalidChoice(Exception):
     def __init__(self, message):
@@ -18,7 +19,8 @@ class InvalidChoice(Exception):
     def __str__(self):
         return f"Cannot find host: '{self.message}'"
 
-
+def get_threat_list():
+    return threat_list
 
 # Method within Analyze to choose which network interface on a device to listen to.
 # Made for devices with multiple interfaces (i.e. has VM network adapters)
@@ -38,24 +40,6 @@ def get_net_interface():
             pass
     # enumerate the select list and convert to a dictionary        
     select = dict(select)
-    
-    # while True:
-    #     print('\nChoose your interface to analyze by index below:')
-    #     for x in select:
-    #         print(f'{x} : {select[x][0]}')
-    #     try:
-    #         ifchoice = int(input('Choose an interface index value: '))
-    #         if ifchoice in select.keys():
-    #             break
-    #         else:
-    #             raise InvalidChoice('Invalid choice for interface select.')
-    #     except InvalidChoice:
-    #         print(f"'{ifchoice}' is not a valid index on the interface list.\n")
-    #     except ValueError:
-    #         print('Please input numeric value only.\n')
-    
-    # print(f"Chosen interface is '{select[ifchoice][0]}' with IP: {select[ifchoice][1]}")
-    # return select[ifchoice]
     return select
 
 def tcp_scan(inter, read_file):
@@ -77,13 +61,6 @@ def tcp_scan(inter, read_file):
     df = pd.DataFrame(data)
     df.to_csv('tcp_udp_scan.csv', mode='a', index=False, header=have_header)
     print(df.head())
-    # print(df.groupby(['source']))
-    # f = open('panda_write_tcp.txt', 'a')
-    # try:
-    #     f.write(df.to_string())
-    # except:
-    #     pass
-    # f.close()
 
 def udp_scan(inter, read_file):
     print(f"\ngetting UDP traffic data on interface {inter[0]} (IP: {inter[1]})")
@@ -103,13 +80,6 @@ def udp_scan(inter, read_file):
     df = pd.DataFrame(data)
     print(df.head())
     df.to_csv('tcp_udp_scan.csv', mode='a', index=False, header=False)
-    # print(df.groupby(['source']))
-    # f = open('panda_write_udp.txt', 'a')
-    # try:
-    #     f.write(df.to_string())
-    # except:
-    #     pass
-    # f.close()
 
 # Analyzes the specified IP address for possible port scanning
 # Calculates the duration of the scan, number of packets sent, and number of unique ports scanned
@@ -135,10 +105,23 @@ def analyze_ip(file="tcp_udp_scan.csv", ip='127.0.0.1'):
         start_time = datetime.strptime(str(first_scan_time), date_format)
         end_time = datetime.strptime(str(last_scan_time), date_format)
         scan_duration = end_time - start_time
-        print(f"Scan Duration: {scan_duration}")
-        print(f'Number Of Packets Sent: {len(filtered_df)}')
-        print(f'Number Of Unique Ports Scanned: {len(unique_ports)}')
-        print(f'List of ports scanned: \n{unique_ports_df}\n')
+        # print(f"Scan Duration: {scan_duration}")
+        # print(f'Number Of Packets Sent: {len(filtered_df)}')
+        # print(f'Number Of Unique Ports Scanned: {len(unique_ports)}')
+        # print(f'List of ports scanned: \n{unique_ports_df}\n')
+        threat_list.loc[len(threat_list)] = [
+            ip,
+            first_scan_time,
+            last_scan_time,
+            scan_duration,
+            unique_ports.min(),
+            unique_ports.max(),
+            len(unique_ports),
+            len(filtered_df)
+        ]
+        print(threat_list.head())
+
+
 # Gets the unique IP addresses that sent packets to the specified host
 # If the IP sent more than 100 packets or scanned more than 10 unique ports, it is considered suspicious
 # All suspicious ips will be analyzed for possible port scanning
@@ -154,19 +137,22 @@ def find_suspicious_ip(file="scan_result.pcap", ip='127.0.0.1'):
         unique_ports = filtered_df['dst-port'].unique()
         if (len(filtered_df) > 100) or (len(unique_ports) > 10):
             analyze_ip(ip=_ip)
-
-def test():
-    print("test")
-        
+      
 def main():
     sniff_length = 20
     inter = get_net_interface()
+ 
+    # TESTING PURPOSES. TODO: Display network inferface options to user
+    first_pair = next(iter((inter.items())))
+    inter = first_pair
+
     print(f"sniffing for {sniff_length} seconds")
     live = pyshark.LiveCapture(interface= inter[0],output_file=SCAN_FILE).sniff(timeout=sniff_length)
     print("done sniffing")
     tcp_scan(inter, SCAN_FILE)
     udp_scan(inter, SCAN_FILE)
     find_suspicious_ip(ip=inter[1])
-    
+
+
 if __name__=="__main__":
     main()

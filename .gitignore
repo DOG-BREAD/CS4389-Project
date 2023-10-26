@@ -11,5 +11,6 @@ panda_write_tcp.txt
 panda_write_udp.txt
 tcp_udp_scan.csv
 .env
+*/__pycache__/*
 
 

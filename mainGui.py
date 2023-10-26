@@ -4,13 +4,13 @@ import ipaddress
 import subprocess
 import threading
 import netifaces 
-# import Analyzer.main as ass
+from tksheet import Sheet
 from Analyzer.main import *
-
 
 def destroy(x):
     x.destroy()
     return
+
 
 def runPortScan(path, ip_address):
     portScan = subprocess.run(['python', path, str(ip_address)])
@@ -50,29 +50,39 @@ def scan_port():
             error_label = tk.Label(simpledialog._dialog_window, text="Invalid IP address format. Please try again.", fg="red")
             error_label.pack(pady=5)
 
-def analyze():
+def analyze(tree):
     # interfaces = simpledialog.askstring("","Select Network Interface")
     x = get_net_interface()
     for key, val in x.items():
         print(f'key = {key}, val = {val}')
+    threat_list = get_threat_list()
+    populate_treeview(threat_list, tree)
     
-    # print(x.keys())
-    # interfaceName= []
-    # interfaceIP = []
-    # for z in x:
-    #     interfaceName.append(z[0])
-    #     interfaceName.append(z[1])
-    # print(interfaceName)
-    # print(interfaceIP)
+    
     
 
+def populate_treeview(data_frame, tree):
+    # Clear the existing items in the Treeview
+    for i in tree.get_children():
+        tree.delete(i)
+
+    # Insert the columns from the DataFrame
+    tree["columns"] = list(data_frame.columns)
+    tree.heading("#0", text="Index")  # Special column for index
+    for column in data_frame.columns:
+        tree.heading(column, text=column)
+        tree.column(column, width=100)  # Adjust the width as needed
+
+    # Insert the data into the Treeview
+    for index, row in data_frame.iterrows():
+        tree.insert("", "end", text=index, values=list(row))
 
 
 
 def analyzeWindow():
     progress_window = tk.Toplevel(root)
     progress_window.title("Analyze")
-    progress_window.geometry("400x250")
+    progress_window.geometry("700x450")
     
     progress_label = tk.Label(progress_window, text=f"Analyzing", font=("Helvetica", 20))
     progress_label.pack(pady=10)
@@ -80,7 +90,13 @@ def analyzeWindow():
     progress_bar.pack()
     progress_bar.start(3)
 
-    thread = threading.Thread(target=analyze,daemon=True)
+    tree = ttk.Treeview(progress_window)
+    tree.pack()
+
+    data_frame = get_threat_list()
+    populate_treeview(data_frame, tree)
+
+    thread = threading.Thread(target=analyze,args=(tree),daemon=True)
     thread.start()
 
 
