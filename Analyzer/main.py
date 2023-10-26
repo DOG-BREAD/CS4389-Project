@@ -108,7 +108,7 @@ def analyze_ip(file="tcp_udp_scan.csv", ip='127.0.0.1'):
         print(f"Scan Duration: {scan_duration}")
         print(f'Number Of Packets Sent: {len(filtered_df)}')
         print(f'Number Of Unique Ports Scanned: {len(unique_ports)}')
-        print(f'List of ports scanned: \n{unique_ports_df}\n')
+        # print(f'List of ports scanned: \n{unique_ports_df}\n')
         threat_list.loc[len(threat_list)] = [
             ip,
             first_scan_time,
@@ -118,6 +118,7 @@ def analyze_ip(file="tcp_udp_scan.csv", ip='127.0.0.1'):
             unique_ports.max(),
             len(unique_ports)
         ]
+        print(threat_list.head())
 
 
 # Gets the unique IP addresses that sent packets to the specified host
@@ -139,6 +140,11 @@ def find_suspicious_ip(file="scan_result.pcap", ip='127.0.0.1'):
 def main():
     sniff_length = 20
     inter = get_net_interface()
+ 
+    # TESTING PURPOSES. TODO: Display network inferface options to user
+    first_pair = next(iter((inter.items())))
+    inter = first_pair
+
     print(f"sniffing for {sniff_length} seconds")
     live = pyshark.LiveCapture(interface= inter[0],output_file=SCAN_FILE).sniff(timeout=sniff_length)
     print("done sniffing")
