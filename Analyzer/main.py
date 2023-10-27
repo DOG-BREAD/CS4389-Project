@@ -19,8 +19,6 @@ class InvalidChoice(Exception):
     def __str__(self):
         return f"Cannot find host: '{self.message}'"
 
-def get_threat_list():
-    return threat_list
 
 # Method within Analyze to choose which network interface on a device to listen to.
 # Made for devices with multiple interfaces (i.e. has VM network adapters)
@@ -137,22 +135,23 @@ def find_suspicious_ip(file="scan_result.pcap", ip='127.0.0.1'):
         unique_ports = filtered_df['dst-port'].unique()
         if (len(filtered_df) > 100) or (len(unique_ports) > 10):
             analyze_ip(ip=_ip)
-      
-def main():
-    sniff_length = 20
-    inter = get_net_interface()
  
-    # TESTING PURPOSES. TODO: Display network inferface options to user
-    first_pair = next(iter((inter.items())))
-    inter = first_pair
+ 
+def get_threat_list():
+    return threat_list
 
+      
+def driver(inter=None):
+    sniff_length = 20
+    
+    if inter is None:
+        #TODO: Fix this
+        inter = get_net_interface()
+ 
+    print(f'inteface: {inter}')
     print(f"sniffing for {sniff_length} seconds")
     live = pyshark.LiveCapture(interface= inter[0],output_file=SCAN_FILE).sniff(timeout=sniff_length)
     print("done sniffing")
     tcp_scan(inter, SCAN_FILE)
     udp_scan(inter, SCAN_FILE)
     find_suspicious_ip(ip=inter[1])
-
-
-if __name__=="__main__":
-    main()
