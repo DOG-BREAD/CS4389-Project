@@ -1,4 +1,5 @@
 import pyshark
+from pyshark.capture.capture import TSharkCrashException
 import socket
 import netifaces as ni
 from scapy.all import IFACES
@@ -56,6 +57,7 @@ def tcp_scan(inter, read_file):
             'time': packet.sniff_time,
         })
     have_header = False if os.path.exists('tcp_udp_scan.csv') else True
+
     df = pd.DataFrame(data)
     df.to_csv('tcp_udp_scan.csv', mode='a', index=False, header=have_header)
     print(df.head())
@@ -140,9 +142,22 @@ def find_suspicious_ip(file="scan_result.pcap", ip='127.0.0.1'):
 def get_threat_list():
     return threat_list
 
-      
+def run_cleanup():
+    # Clean up the csv file by removing all rows besides the headers
+    print("cleaning up csv")
+    df = pd.read_csv('tcp_udp_scan.csv')
+    # Keep the first row as the header
+    
+    headers = df.columns
+    df = pd.DataFrame(columns=headers)
+
+    # Save the cleaned up csv file
+    df.to_csv('tcp_udp_scan.csv', index=False, header=True)
+    print("done cleaning up csv")
+
+  
 def driver(inter=None):
-    sniff_length = 20
+    sniff_length = 10
     
     if inter is None:
         #TODO: Fix this
@@ -155,3 +170,7 @@ def driver(inter=None):
     tcp_scan(inter, SCAN_FILE)
     udp_scan(inter, SCAN_FILE)
     find_suspicious_ip(ip=inter[1])
+    
+    data = pd.read_csv("tcp_udp_scan.csv")
+    if len(data) > 10000:
+        run_cleanup()

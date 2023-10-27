@@ -50,9 +50,11 @@ def scan_port():
 interface_option = None
 def getInterface():
     interfaces = get_net_interface()
-    interfaces = interfaces.values()
+    interfaces = interfaces.items()
+
     if interface_option is None:
         dialog = tk.Toplevel(root)
+        dialog.title("Select A Network Interface")
         def save_option(option):
             global interface_option
             dialog.destroy()
@@ -61,14 +63,12 @@ def getInterface():
 
         # Create a button for each network interface
         for interface in interfaces:
-            button = tk.Button(dialog, text=interface, command=lambda i=interface: save_option(i))
+            button = tk.Button(dialog, text=interface, height=5, width=60, command=lambda i=interface: save_option(i))
             button.pack()
-        # print(interface_option)
         
     if interface_option is not None:
         print(interface_option)
         analyzeWindow()
-
 
 def populate_treeview(data_frame, tree):
     # Clear the existing items in the Treeview
@@ -91,17 +91,14 @@ def start_scan_analysis(tree):
     driver(interface_option)
     threat_list = get_threat_list()
     populate_treeview(threat_list, tree)
-    return
     
-
 def analyzeWindow():
-    print(f"IN analyzeWindow: interface_option ====== {interface_option}")
     progress_window = tk.Toplevel(root)
     progress_window.title("Analyzer")
-    progress_window.geometry("1400x750")
+    progress_window.geometry("2000x750")
 
     test_label_var = tk.StringVar()
-    test_label_var.set(f"Port Scanning Analysis: [{interface_option}]")
+    test_label_var.set(f"Port Scanning Analysis: Interface: {interface_option[0]}, IP: {interface_option[1]}")
     
     test_label = tk.Label(progress_window, textvariable=test_label_var)
     test_label.pack()
@@ -121,10 +118,6 @@ def analyzeWindow():
 
     progress_window.mainloop()
     
-    
-def attack_target():
-    pass
-
 def main():
     global root
     root = tk.Tk()
