@@ -11,13 +11,10 @@ def destroy(x):
     x.destroy()
     return
 
-
-
 def runPortScan(path, ip_address):
     portScan = subprocess.run(['python', path, str(ip_address)])
     
 def scan_ip(ip_address):
-
     progress_window = tk.Toplevel(root)
     progress_window.title("Scanning Progress")
     progress_window.geometry("300x150")
@@ -36,7 +33,6 @@ def scan_ip(ip_address):
     progress_window.after(40000,destroy,progress_window)
     root.mainloop()
 
-
 def scan_port():
     ip_address = simpledialog.askstring("Enter IP Address", "Please enter the IP address:")
     
@@ -50,37 +46,29 @@ def scan_port():
         except ValueError:
             error_label = tk.Label(simpledialog._dialog_window, text="Invalid IP address format. Please try again.", fg="red")
             error_label.pack(pady=5)
+
 interface_option = None
 def getInterface():
     interfaces = get_net_interface()
-    interfaces = interfaces.values()
+    interfaces = interfaces.items()
+
     if interface_option is None:
         dialog = tk.Toplevel(root)
+        dialog.title("Select A Network Interface")
         def save_option(option):
             global interface_option
             dialog.destroy()
             interface_option = option
+            analyzeWindow()
 
         # Create a button for each network interface
         for interface in interfaces:
-            button = tk.Button(dialog, text=interface, command=lambda i=interface: save_option(i))
+            button = tk.Button(dialog, text=interface, height=5, width=60, command=lambda i=interface: save_option(i))
             button.pack()
-        print(interface_option)
+        
     if interface_option is not None:
         print(interface_option)
         analyzeWindow()
-
-
-def analyze(tree):
-    interfaces = simpledialog.askstring("","Select Network Interface")
-    x = get_net_interface()
-    for key, val in x.items():
-        print(f'key = {key}, val = {val}')
-    threat_list = get_threat_list()
-    populate_treeview(threat_list, tree)
-    
-    
-    
 
 def populate_treeview(data_frame, tree):
     # Clear the existing items in the Treeview
@@ -92,41 +80,44 @@ def populate_treeview(data_frame, tree):
     tree.heading("#0", text="Index")  # Special column for index
     for column in data_frame.columns:
         tree.heading(column, text=column)
+        # tree.column(column, anchor='center')
         tree.column(column, width=100)  # Adjust the width as needed
 
     # Insert the data into the Treeview
     for index, row in data_frame.iterrows():
         tree.insert("", "end", text=index, values=list(row))
 
-
-
+def start_scan_analysis(tree):
+    driver(interface_option)
+    threat_list = get_threat_list()
+    populate_treeview(threat_list, tree)
+    
 def analyzeWindow():
     progress_window = tk.Toplevel(root)
-    progress_window.title("Analyze")
-    progress_window.geometry("700x450")
+    progress_window.title("Analyzer")
+    progress_window.geometry("2000x750")
+
+    test_label_var = tk.StringVar()
+    test_label_var.set(f"Port Scanning Analysis: Interface: {interface_option[0]}, IP: {interface_option[1]}")
     
-    progress_label = tk.Label(progress_window, text=f"Analyzing", font=("Helvetica", 20))
-    progress_label.pack(pady=10)
-    progress_bar = ttk.Progressbar(progress_window, orient='horizontal', mode='indeterminate', length=100)
-    progress_bar.pack()
-    progress_bar.start(3)
+    test_label = tk.Label(progress_window, textvariable=test_label_var)
+    test_label.pack()
+    
+    # create a button to start the test
+    start_test_button = tk.Button(progress_window, text="Start Test", command=lambda: start_scan_analysis(tree))
+    start_test_button.pack(pady=10)
 
     tree = ttk.Treeview(progress_window)
-    tree.pack()
+    ttk.Style().configure("Treeview", font=('Helvetica', 12))
+    
+    tree.config(height=15, show='headings')
+    tree.pack(fill='both', expand=True)
 
     data_frame = get_threat_list()
     populate_treeview(data_frame, tree)
 
-    thread = threading.Thread(target=analyze,args=(tree),daemon=True)
-    thread.start()
-
-
-
-    root.mainloop()
+    progress_window.mainloop()
     
-def attack_target():
-    pass
-
 def main():
     global root
     root = tk.Tk()
@@ -139,23 +130,18 @@ def main():
 
     title_label = tk.Label(root, text="PORT SCANNER", font=("Helvetica", 36, "bold"), highlightbackground="black", highlightthickness=5)
     title_label.pack(pady=(40, 20))
-
     button_font = ("Helvetica", 24,'bold', 'underline')
 
-
-
     scan_button = tk.Button(root, text="Scan", command=scan_port, font=button_font,foreground="black", width=20)
-    attack_button = tk.Button(root, text="Analyze", command=getInterface, font=button_font,foreground="black", width=20)
-    exit_button = tk.Button(root, text="Exit", command=root.quit, font=button_font,foreground="black", width=20)
+    analysis_button = tk.Button(root, text="Analyze", command=getInterface, font=button_font,foreground="black", width=20)
+    exit_button = tk.Button(root, text="Exit", command=exit, font=button_font,foreground="black", width=20)
 
     scan_button.pack(pady=10)
-    attack_button.pack(pady=10)
+    analysis_button.pack(pady=10)
     exit_button.pack(pady=10)
-
 
     root.grid_rowconfigure(0, weight=1)
     root.grid_columnconfigure(0, weight=1)
-
 
     root.mainloop()
 
