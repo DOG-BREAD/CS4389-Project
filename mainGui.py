@@ -46,6 +46,7 @@ def scan_port():
         except ValueError:
             error_label = tk.Label(simpledialog._dialog_window, text="Invalid IP address format. Please try again.", fg="red")
             error_label.pack(pady=5)
+
 hasbooted = False
 interface_option = None
 def getInterface():
@@ -62,21 +63,16 @@ def getInterface():
             if hasbooted:
                 # change the label to reflect the new interface
                 test_label_var.set(f"Port Scanning Analysis: Interface: {interface_option[0]}, IP: {interface_option[1]}")
-                progress_window.update()
-                
+                clear_threat_list()
+                return
             else:
                 analyzeWindow()
 
-        
         # Create a button for each network interface
         for interface in interfaces:
             button = tk.Button(dialog, text=f"{interface[0]} : {interface[1]}", height=5, width=60, command=lambda i=interface: save_option(i))
             button.pack()
-    
-    if interface_option is not None:
-        print("DID IT RESET? NO")
-        print(interface_option)
-        analyzeWindow()
+
 
 def populate_treeview(data_frame, tree):
     # Clear the existing items in the Treeview
@@ -96,24 +92,25 @@ def populate_treeview(data_frame, tree):
         tree.insert("", "end", text=index, values=list(row))
 
 def start_scan_analysis(tree):
+    clear_threat_list()
     driver(interface_option)
     threat_list = get_threat_list()
     populate_treeview(threat_list, tree)
 
-def clear_interface():
+def clear_interface(tree):
     global interface_option
     interface_option = None
     clear_threat_list()
-    print("cleared interface")
     getInterface()
-
+    populate_treeview(get_threat_list(), tree)
 
 def analyzeWindow():
-    hasbooted = True
-    global progress_window
     progress_window = tk.Toplevel(root)
     progress_window.title("Analyzer")
     progress_window.geometry("2000x750")
+    
+    global hasbooted
+    hasbooted = True
 
     global test_label_var
     test_label_var = tk.StringVar()
@@ -128,7 +125,7 @@ def analyzeWindow():
     
     # stop_test_button = tk.Button(progress_window, text="Stop Detection & Analysis", command=lambda: stop_scan_analysis())
     
-    clear_interface_button = tk.Button(progress_window, text="Clear Interface", command=lambda: clear_interface())
+    clear_interface_button = tk.Button(progress_window, text="Clear Results & Change Interface", command=lambda: clear_interface(tree))
     clear_interface_button.pack(padx=5, pady=2)
     
     tree = ttk.Treeview(progress_window)
@@ -139,9 +136,6 @@ def analyzeWindow():
 
     data_frame = get_threat_list()
     populate_treeview(data_frame, tree)
-
-    progress_window.mainloop()
-    
     
 def main():
     global root
