@@ -66,11 +66,14 @@ def getInterface():
                 clear_threat_list()
                 return
             else:
-                # thread = threading.Thread(target=analyzeWindow)
                 # thread.start()
+                clear_threat_list()
+                # analyzeWindow(interface_option)
+                thread = threading.Thread(target=analyzeWindow, args=[interface_option])
+                thread.start()
                 
-                analyzeWindow(interface_option)
                 interface_option = None
+                root.mainloop()
                 
         # Create a button for each network interface
         for interface in interfaces:
@@ -110,7 +113,7 @@ def clear_interface(tree, progress_window):
     getInterface()
     populate_treeview(get_threat_list(), tree)
 
-def analyzeWindow(interface_option):
+def analyzeWindow(interface_option: list):
     progress_window = tk.Toplevel(root)
     progress_window.title("Analyzer")
     progress_window.geometry("2000x750")
