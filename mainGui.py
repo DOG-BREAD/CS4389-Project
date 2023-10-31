@@ -66,12 +66,17 @@ def getInterface():
                 clear_threat_list()
                 return
             else:
-                analyzeWindow()
-
+                # thread = threading.Thread(target=analyzeWindow)
+                # thread.start()
+                
+                analyzeWindow(interface_option)
+                interface_option = None
+                
         # Create a button for each network interface
         for interface in interfaces:
             button = tk.Button(dialog, text=f"{interface[0]} : {interface[1]}", height=5, width=60, command=lambda i=interface: save_option(i))
             button.pack()
+    root.mainloop()
 
 
 def populate_treeview(data_frame, tree):
@@ -91,7 +96,7 @@ def populate_treeview(data_frame, tree):
     for index, row in data_frame.iterrows():
         tree.insert("", "end", text=index, values=list(row))
 
-def start_scan_analysis(tree):
+def start_scan_analysis(tree, interface_option):
     clear_threat_list()
     driver(interface_option)
     threat_list = get_threat_list()
@@ -104,7 +109,7 @@ def clear_interface(tree):
     getInterface()
     populate_treeview(get_threat_list(), tree)
 
-def analyzeWindow():
+def analyzeWindow(interface_option):
     progress_window = tk.Toplevel(root)
     progress_window.title("Analyzer")
     progress_window.geometry("2000x750")
@@ -120,7 +125,7 @@ def analyzeWindow():
     test_label.pack()
     
     # create a button to start the test
-    start_test_button = tk.Button(progress_window, text="Start Detection & Analysis", command=lambda: start_scan_analysis(tree))
+    start_test_button = tk.Button(progress_window, text="Start Detection & Analysis", command=lambda: start_scan_analysis(tree, interface_option))
     start_test_button.pack(padx=5, pady=2)
     
     # stop_test_button = tk.Button(progress_window, text="Stop Detection & Analysis", command=lambda: stop_scan_analysis())
@@ -136,6 +141,11 @@ def analyzeWindow():
 
     data_frame = get_threat_list()
     populate_treeview(data_frame, tree)
+    
+    hasbooted = False
+
+    # root.protocol("WM_DELETE_WINDOW", destroy(progress_window))
+    # root.mainloop()
     
 def main():
     global root
@@ -161,7 +171,7 @@ def main():
 
     root.grid_rowconfigure(0, weight=1)
     root.grid_columnconfigure(0, weight=1)
-
+    
     root.mainloop()
 
 
