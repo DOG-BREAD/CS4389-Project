@@ -1,5 +1,10 @@
 from tkinter import *
 from tkinter import ttk
+import threading
+from main import driver, get_net_interface, get_threat_list
+from main import analyze_ip
+
+
 
 def main():
     global root
@@ -10,7 +15,7 @@ def main():
     root.geometry("800x600")
     
     #load background pic
-    background_image = PhotoImage(file="gui/tron_tunnels.png")
+    background_image = PhotoImage(file="tron_tunnels.png")
 
     #Use a modern theme
     style = ttk.Style()
@@ -25,7 +30,7 @@ def main():
     style.configure("TButton", padding=10, background="purple", foreground="red")
 
     # Icon for the window
-    root.iconphoto(True, PhotoImage(file="gui/guy.png"))
+    root.iconphoto(True, PhotoImage(file="guy.png"))
     
     # Buttons
     exit_button = ttk.Button(root, text="Exit", command=root.quit, style="TButton")
@@ -33,6 +38,9 @@ def main():
 
     scan_button = ttk.Button(root, text="Scan Ports", command=scanCallBack, style="TButton")
     scan_button.place(relx=0.5, rely=0.4, anchor=CENTER)
+    
+    analyze_button = ttk.Button(root, text="Analyze IP", command=analyzeCallBack, style="TButton")
+    analyze_button.place(relx=0.5, rely=0.8, anchor=CENTER)
 
     attack_button = ttk.Button(root, text="Attack!", command=attackCallBack, style="TButton")
     attack_button.place(relx=0.5, rely=0.6, anchor=CENTER)
@@ -47,7 +55,7 @@ def scanCallBack():
     message.config(bg="#282c34")  # Use the same background color as in the main function
     
     #background_image
-    background_image = PhotoImage(file="gui/2nd.png")
+    background_image = PhotoImage(file="2nd.png")
 
     message_label = Label(message, text="Scanning", bg='#282c34', fg='white') 
     message_label.pack(pady=10)
@@ -70,7 +78,35 @@ def scanCallBack():
 
     stop_scanning = ttk.Button(message, text="Exit", command=message.destroy, style="TButton")
     stop_scanning.pack(pady=10)
+    
+    # Call the port scanning function from the backend script
+    # You might need to adjust the arguments based on your needs
+    driver_thread = threading.Thread(target=driver, args=(get_net_interface(),))
+    driver_thread.start()
+    # Wait for the thread to finish before displaying results
+    driver_thread.join()
 
+    # Update the label with scan data
+    scan_data_label.config(text=f"Scan Data:\n{get_threat_list()}")
+    
+    
+def analyzeCallBack():
+    global message
+    message = Toplevel(root)
+    message.title("Analyze IP")
+    message.geometry("400x200")
+    message.config(bg="#282c34")
+
+    message_label = Label(message, text="Enter IP to analyze:", bg='#282c34', fg='white')
+    message_label.pack(pady=10)
+
+    ip_entry = Entry(message)
+    ip_entry.pack(pady=10)
+
+    analyze_button = ttk.Button(message, text="Analyze", command=lambda: analyze_ip(ip_entry.get()))
+    analyze_button.pack(pady=10)
+    
+		
 
 
 def yesAttack():
@@ -85,7 +121,7 @@ def attackCallBack():
     message.config(bg="#282c34")
 
     #global attack_Image
-    attack_Image = PhotoImage(file="gui/2nd.png")
+    attack_Image = PhotoImage(file="2nd.png")
 
     message_label = Label(message, text="would you like to counter attack?", bg='#282c34', fg='white')
     message_label.pack(pady=10)
@@ -101,7 +137,7 @@ def attackCallBack():
     No_button = Button(message, text="No!", command=message.destroy)
     No_button.place(relx=0.5, rely=0.5, anchor=CENTER, width=50, height=30)
 
-    # needs to launch attack and show what's done, close window and go back to main skeleton frame
+    
 
 if __name__ == "__main__":
     main()
