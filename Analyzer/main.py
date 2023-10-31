@@ -93,8 +93,9 @@ def analyze_ip(file="tcp_udp_scan.csv", ip='127.0.0.1'):
     if len(filtered_df) > 0:
         print("\n*** Possible Port Scanning Detected ***")
         print(f"---- Analyzing Scans Of IP: [{ip}] ----")
+        print(f"---- Unique Ports Scanned: {unique_ports} ----")
         df.loc[filtered_df.index, 'time'] = filtered_df['time']
-        df_sorted = df.sort_values(by='time')
+        df_sorted = filtered_df.sort_values(by='time')
         # Get first and last entries
         first_scan = df_sorted.iloc[0]
         last_scan = df_sorted.iloc[-1]
@@ -105,10 +106,6 @@ def analyze_ip(file="tcp_udp_scan.csv", ip='127.0.0.1'):
         start_time = datetime.strptime(str(first_scan_time), date_format)
         end_time = datetime.strptime(str(last_scan_time), date_format)
         scan_duration = end_time - start_time
-        # print(f"Scan Duration: {scan_duration}")
-        # print(f'Number Of Packets Sent: {len(filtered_df)}')
-        # print(f'Number Of Unique Ports Scanned: {len(unique_ports)}')
-        # print(f'List of ports scanned: \n{unique_ports_df}\n')
         threat_list.loc[len(threat_list)] = [
             ip,
             first_scan_time,
@@ -119,7 +116,6 @@ def analyze_ip(file="tcp_udp_scan.csv", ip='127.0.0.1'):
             len(unique_ports),
             len(filtered_df)
         ]
-        print(threat_list.head())
 
 
 # Gets the unique IP addresses that sent packets to the specified host
@@ -127,6 +123,7 @@ def analyze_ip(file="tcp_udp_scan.csv", ip='127.0.0.1'):
 # All suspicious ips will be analyzed for possible port scanning
 def find_suspicious_ip(file="scan_result.pcap", ip='127.0.0.1'):  
     df = pd.read_csv("tcp_udp_scan.csv")
+    clear_threat_list()
     unique_ip = df['source'].unique().tolist()
     try:
         unique_ip.remove('source')
@@ -135,12 +132,16 @@ def find_suspicious_ip(file="scan_result.pcap", ip='127.0.0.1'):
     for _ip in unique_ip:
         filtered_df = df[df['source'] == _ip]
         unique_ports = filtered_df['dst-port'].unique()
-        if (len(filtered_df) > 100) or (len(unique_ports) > 10):
+        if ((len(filtered_df) > 100) or (len(unique_ports) > 10)) and (filtered_df['destination'].unique()[0] == ip):
             analyze_ip(ip=_ip)
+    print(threat_list.head())
  
  
 def get_threat_list():
     return threat_list
+
+def clear_threat_list():
+    threat_list = pd.DataFrame(columns=['IP', 'First Packet Time', 'Last Packet Time','Duration', 'Min Port #','Max Port #', 'Number of Unique Ports', 'Num Packets Sent'])
 
 def run_cleanup():
     # Clean up the csv file by removing all rows besides the headers
