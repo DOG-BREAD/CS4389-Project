@@ -102,9 +102,10 @@ def start_scan_analysis(tree, interface_option):
     threat_list = get_threat_list()
     populate_treeview(threat_list, tree)
 
-def clear_interface(tree):
+def clear_interface(tree, progress_window):
     global interface_option
     interface_option = None
+    progress_window.destroy()
     clear_threat_list()
     getInterface()
     populate_treeview(get_threat_list(), tree)
@@ -113,7 +114,7 @@ def analyzeWindow(interface_option):
     progress_window = tk.Toplevel(root)
     progress_window.title("Analyzer")
     progress_window.geometry("2000x750")
-    
+    progress_window.configure(bg='#F38102')
     global hasbooted
     hasbooted = True
 
@@ -130,11 +131,11 @@ def analyzeWindow(interface_option):
     
     # stop_test_button = tk.Button(progress_window, text="Stop Detection & Analysis", command=lambda: stop_scan_analysis())
     
-    clear_interface_button = tk.Button(progress_window, text="Clear Results & Change Interface", command=lambda: clear_interface(tree))
+    clear_interface_button = tk.Button(progress_window, text="Clear Results & Change Interface", command=lambda: clear_interface(tree, progress_window))
     clear_interface_button.pack(padx=5, pady=2)
     
     tree = ttk.Treeview(progress_window)
-    ttk.Style().configure("Treeview", font=('Helvetica', 12))
+    ttk.Style().configure("Treeview", font=('Helvetica', 12),background ="#00cc00", fieldbackground="#00cc00",foreground="#000000" )
     
     tree.config(height=15, show='headings')
     tree.pack(fill='both', expand=True)
