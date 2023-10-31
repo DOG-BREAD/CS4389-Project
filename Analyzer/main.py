@@ -93,7 +93,6 @@ def analyze_ip(file="tcp_udp_scan.csv", ip='127.0.0.1'):
         print(f"---- Analyzing Scans Of IP: [{ip}] ----")
         df.loc[filtered_df.index, 'time'] = filtered_df['time']
         df_sorted = filtered_df.sort_values(by='time')
-        
 
         # Sorts the DataFrame by time and gets the unique times based on date and hour and significant digit of minute    
         df_sorted['time'] = pd.to_datetime(df_sorted['time'])
@@ -109,6 +108,9 @@ def analyze_ip(file="tcp_udp_scan.csv", ip='127.0.0.1'):
             last_scan = test_df.iloc[-1]
             last_scan_time = last_scan['time']
             unique_ports = test_df['dst-port'].unique()
+            
+            if len(unique_ports) < 10 and len(test_df) < 100:
+                continue
             
             # Format of date string
             date_format = "%Y-%m-%d %H:%M:%S.%f"
@@ -145,10 +147,7 @@ def find_suspicious_ip(file="scan_result.pcap", ip='127.0.0.1'):
         filtered_df = df[df['source'] == _ip]
         unique_ports = filtered_df['dst-port'].unique()
         if ((len(filtered_df) > 100) or (len(unique_ports) > 10)) and (filtered_df['destination'].unique()[0] == ip):
-            threat_list = get_threat_list()
-            print(threat_list.head())
             analyze_ip(ip=_ip)
-    print(threat_list.head())
  
  
 def get_threat_list():
