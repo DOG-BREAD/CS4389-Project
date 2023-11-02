@@ -94,10 +94,15 @@ def populate_treeview(data_frame, tree):
     for index, row in data_frame.iterrows():
         tree.insert("", "end", text=index, values=list(row))
 
-def start_scan_analysis(tree, interface_option):
+def start_scan_analysis(tree, interface_option, root):
     clear_threat_list()
     driver(interface_option)
     threat_list = get_threat_list()
+    if len(threat_list) > 0:
+        print(f"TESTING {threat_list}")
+    else:
+        print("No threats found")
+        display_no_threats_found(root)
     populate_treeview(threat_list, tree)
 
 def clear_interface(tree, progress_window):
@@ -107,6 +112,21 @@ def clear_interface(tree, progress_window):
     clear_threat_list()
     getInterface()
     populate_treeview(get_threat_list(), tree)
+
+
+def display_no_threats_found(root):
+    no_threats_window = tk.Toplevel(root)
+    no_threats_window.title("No Port Scanning Detected")
+    no_threats_window.geometry("350x100")
+
+    no_threats_label = tk.Label(no_threats_window, text="No Threats Detected!", font=("Helvetica", 25))
+    no_threats_label.pack(pady=10)
+
+    ok_button = tk.Button(no_threats_window, text="OK", command=lambda: no_threats_window.destroy())
+    ok_button.pack(pady=5)
+
+    root.mainloop()
+
 
 def analyzeWindow(interface_option: list):
     progress_window = tk.Toplevel(root)
@@ -125,7 +145,7 @@ def analyzeWindow(interface_option: list):
     test_label.pack()
     
     # create a button to start the test
-    start_test_button = tk.Button(progress_window, text="Start Detection & Analysis", command=lambda: start_scan_analysis(tree, interface_option))
+    start_test_button = tk.Button(progress_window, text="Start Detection & Analysis", command=lambda: start_scan_analysis(tree, interface_option, root))
     start_test_button.pack(padx=5, pady=2)
     
     clear_interface_button = tk.Button(progress_window, text="Clear Results & Change Interface", command=lambda: clear_interface(tree, progress_window))
@@ -145,7 +165,22 @@ def main():
     global root
     root = tk.Tk()
     root.title("Port Scanner")
-    root.geometry("600x400")
+    # root.geometry("600x400")
+
+    window_width = 600
+    window_height = 400
+
+    # my commit message should be ASS
+
+
+    # Get the screen width and height
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+
+    x = (screen_width - window_width) // 2
+    y = (screen_height - window_height) // 2
+    root.geometry(f"{window_width}x{window_height}+{x}+{y}")
+
 
     background_image = tk.PhotoImage(file="gui/hack.png")
     background_label = tk.Label(root, image=background_image)
