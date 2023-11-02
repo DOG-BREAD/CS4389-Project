@@ -11,6 +11,31 @@ def destroy(x):
     x.destroy()
     return
 
+def showPort():
+    portList= []
+    f = open("ports.txt","r")
+    lines = f.readlines()
+    lines = sorted(lines, key=lambda x: int(x)) # sorts list using lambda function where each x is cast as an int
+    # Convert the list to a string for display
+    linesString = "\n".join(map(str, lines))
+
+    # Create a pop-up window
+    popup = tk.Toplevel(root)
+    popup.title("Port Numbers")
+    popup.geometry("200x400")
+    # Create a Text widget to display the list
+    text_widget = tk.Text(popup, wrap="word", padx=5, pady=10)
+    text_widget.insert("1.0", linesString)
+    text_widget.configure(background="black", foreground="yellow",font=('Comic Sans MS', 12, 'bold italic'))
+    text_widget.pack(side="left", fill="both", expand=True)
+
+    # Create a vertical scroll bar
+    scrollbar = tk.Scrollbar(popup, command=text_widget.yview)
+    scrollbar.pack(side="right", fill="y")
+    text_widget.config(yscrollcommand=scrollbar.set)
+    
+    root.mainloop()
+    
 def runPortScan(path, ip_address):
     portScan = subprocess.run(['python', path, str(ip_address)])
     
@@ -30,7 +55,7 @@ def scan_ip(ip_address):
     thread2.start()
     
     #destroy after 40 seconds , call destroy method, pass the window
-    progress_window.after(40000,destroy,progress_window)
+    progress_window.after(30000,destroy,progress_window)
     root.mainloop()
 
 def scan_port():
@@ -40,8 +65,12 @@ def scan_port():
         try:
             ipaddress.ip_address(ip_address)
             
-            thread = threading.Thread(target=scan_ip, args=[ip_address],daemon=True)
-            thread.start()
+            scan_ip(ip_address)
+            # thread = threading.Thread(target=scan_ip, args=[ip_address],daemon=True)
+            # thread.start()
+
+            
+            root.mainloop()
  
         except ValueError:
             error_label = tk.Label(simpledialog._dialog_window, text="Invalid IP address format. Please try again.", fg="red")
@@ -157,7 +186,7 @@ def main():
     global root
     root = tk.Tk()
     root.title("Port Scanner")
-    root.geometry("600x400")
+    root.geometry("600x600")
 
     background_image = tk.PhotoImage(file="gui/hack.png")
     background_label = tk.Label(root, image=background_image)
@@ -169,10 +198,12 @@ def main():
 
     scan_button = tk.Button(root, text="Scan", command=scan_port, font=button_font,foreground="black", width=20)
     analysis_button = tk.Button(root, text="Analyze", command=getInterface, font=button_font,foreground="black", width=20)
+    port_button = tk.Button(root, text="Open Ports", command=showPort, font=button_font,foreground="black", width=20)
     exit_button = tk.Button(root, text="Exit", command=exit, font=button_font,foreground="black", width=20)
 
     scan_button.pack(pady=10)
     analysis_button.pack(pady=10)
+    port_button.pack(pady=10)
     exit_button.pack(pady=10)
 
     root.grid_rowconfigure(0, weight=1)

@@ -69,7 +69,7 @@ class PortScanner:
             threds[i].join()
 
     def write_file(self, open_ports):
-        file = open('ports.txt', 'a')
+        file = open('ports.txt', 'w')
         for port in open_ports:
             file.write(str(port))
             file.write('\n')
