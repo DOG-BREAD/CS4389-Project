@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, simpledialog
+from tkinter import ttk, simpledialog, PhotoImage
 import ipaddress
 import subprocess
 import threading
@@ -13,28 +13,44 @@ def destroy(x):
 
 def showPort():
     portList= []
-    f = open("ports.txt","r")
-    lines = f.readlines()
-    lines = sorted(lines, key=lambda x: int(x)) # sorts list using lambda function where each x is cast as an int
-    # Convert the list to a string for display
-    linesString = "\n".join(map(str, lines))
-
-    # Create a pop-up window
-    popup = tk.Toplevel(root)
-    popup.title("Port Numbers")
-    popup.geometry("200x400")
-    # Create a Text widget to display the list
-    text_widget = tk.Text(popup, wrap="word", padx=5, pady=10)
-    text_widget.insert("1.0", linesString)
-    text_widget.configure(background="black", foreground="yellow",font=('Comic Sans MS', 12, 'bold italic'))
-    text_widget.pack(side="left", fill="both", expand=True)
-
-    # Create a vertical scroll bar
-    scrollbar = tk.Scrollbar(popup, command=text_widget.yview)
-    scrollbar.pack(side="right", fill="y")
-    text_widget.config(yscrollcommand=scrollbar.set)
+    try:
+        f = open("ports.txt","r")
     
-    root.mainloop()
+        lines = f.readlines()
+        lines = sorted(lines, key=lambda x: int(x)) # sorts list using lambda function where each x is cast as an int
+        # Convert the list to a string for display
+        linesString = "\n".join(map(str, lines))
+
+        # Create a pop-up window
+        popup = tk.Toplevel(root)
+        popup.title("Port Numbers")
+        popup.geometry("200x400")
+        # Create a Text widget to display the list
+        text_widget = tk.Text(popup, wrap="word", padx=5, pady=10)
+        text_widget.insert("1.0", linesString)
+        text_widget.configure(background="black", foreground="yellow",font=('Comic Sans MS', 12, 'bold italic'))
+        text_widget.pack(side="left", fill="both", expand=True)
+
+        # Create a vertical scroll bar
+        scrollbar = tk.Scrollbar(popup, command=text_widget.yview)
+        scrollbar.pack(side="right", fill="y")
+        text_widget.config(yscrollcommand=scrollbar.set)
+        
+        root.mainloop()
+    except:
+        popup = tk.Toplevel(root)
+        popup.title("Port Numbers")
+        # popup.geometry()
+        background_image = tk.PhotoImage(file="gui/Wet_Painters_130.png")
+        background_label = tk.Label(popup, image=background_image)
+        background_label.place(relwidth=1, relheight=1)
+        background_label.pack(fill="both", expand=True)
+        # label = tk.Label(popup,bgImage)
+        
+        # label.pack()
+        root.mainloop()
+        
+
     
 def runPortScan(path, ip_address):
     portScan = subprocess.run(['python', path, str(ip_address)])
