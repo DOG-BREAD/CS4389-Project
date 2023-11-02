@@ -37,7 +37,7 @@ def showPort():
         text_widget.config(yscrollcommand=scrollbar.set)
         
         root.mainloop()
-    except:
+    except FileNotFoundError:
         popup = tk.Toplevel(root)
         popup.title("Port Numbers")
         # popup.geometry()
@@ -45,9 +45,7 @@ def showPort():
         background_label = tk.Label(popup, image=background_image)
         background_label.place(relwidth=1, relheight=1)
         background_label.pack(fill="both", expand=True)
-        # label = tk.Label(popup,bgImage)
         
-        # label.pack()
         root.mainloop()
         
 
@@ -79,14 +77,8 @@ def scan_port():
     if ip_address is not None:
         try:
             ipaddress.ip_address(ip_address)
-            
             scan_ip(ip_address)
-            # thread = threading.Thread(target=scan_ip, args=[ip_address],daemon=True)
-            # thread.start()
-
-            
             root.mainloop()
- 
         except ValueError:
             error_label = tk.Label(simpledialog._dialog_window, text="Invalid IP address format. Please try again.", fg="red")
             error_label.pack(pady=5)
@@ -159,7 +151,17 @@ def clear_interface(tree, progress_window):
 def display_no_threats_found(root):
     no_threats_window = tk.Toplevel(root)
     no_threats_window.title("No Port Scanning Detected")
-    no_threats_window.geometry("350x100")
+
+    window_width = 350
+    window_height = 100
+
+    # Get the screen width and height
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+
+    x = (screen_width - window_width) // 2
+    y = (screen_height - window_height) // 2
+    no_threats_window.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
     no_threats_label = tk.Label(no_threats_window, text="No Threats Detected!", font=("Helvetica", 25))
     no_threats_label.pack(pady=10)
@@ -207,7 +209,6 @@ def main():
     global root
     root = tk.Tk()
     root.title("Port Scanner")
-    # root.geometry("600x400")
 
     window_width = 600
     window_height = 400
