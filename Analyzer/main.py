@@ -146,6 +146,7 @@ def find_suspicious_ip(file="scan_result.pcap", ip='127.0.0.1'):
         unique_ports = filtered_df['dst-port'].unique()
         if ((len(filtered_df) > 100) or (len(unique_ports) > 10)) and (filtered_df['destination'].unique()[0] == ip):
             analyze_ip(ip=_ip)
+
  
 def get_threat_list():
     return threat_list
