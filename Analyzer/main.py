@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 load_dotenv()
 SCAN_FILE = './scan_result.pcap'
 
-threat_list = pd.DataFrame(columns=['IP', 'First Packet Time', 'Last Packet Time','Duration', 'Min Port #','Max Port #', 'Number of Unique Ports', 'Num Packets Sent'])
+threat_list = pd.DataFrame(columns=['IP', 'First Packet Time', 'Last Packet Time','Duration', 'Min Port #','Max Port #', '# Unique Ports', '# Packets Sent'])
 
 class InvalidChoice(Exception):
     def __init__(self, message):
@@ -145,7 +145,6 @@ def find_suspicious_ip(file="scan_result.pcap", ip='127.0.0.1'):
         filtered_df = df[df['source'] == _ip]
         unique_ports = filtered_df['dst-port'].unique()
         if ((len(filtered_df) > 100) or (len(unique_ports) > 10)) and (filtered_df['destination'].unique()[0] == ip):
-            threat_list = get_threat_list()
             analyze_ip(ip=_ip)
  
 def get_threat_list():
@@ -153,7 +152,7 @@ def get_threat_list():
 
 def clear_threat_list():
     global threat_list
-    threat_list = pd.DataFrame(columns=['IP', 'First Packet Time', 'Last Packet Time','Duration', 'Min Port #','Max Port #', 'Number of Unique Ports', 'Num Packets Sent'])
+    threat_list = pd.DataFrame(columns=['IP', 'First Packet Time', 'Last Packet Time','Duration', 'Min Port #','Max Port #', '# Unique Ports', '# Packets Sent'])
 
 def run_cleanup():
     # Clean up the csv file by removing all rows besides the headers
