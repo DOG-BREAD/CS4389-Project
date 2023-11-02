@@ -38,7 +38,7 @@ def showPort():
     
 def runPortScan(path, ip_address):
     portScan = subprocess.run(['python', path, str(ip_address)])
-    
+
 def scan_ip(ip_address):
     progress_window = tk.Toplevel(root)
     progress_window.title("Scanning Progress")
@@ -53,7 +53,6 @@ def scan_ip(ip_address):
     #start the port scanner thread 
     thread2 = threading.Thread(target=runPortScan, args=['portScanner/PortScanner.py',ip_address])
     thread2.start()
-    
     #destroy after 40 seconds , call destroy method, pass the window
     progress_window.after(30000,destroy,progress_window)
     root.mainloop()
@@ -127,9 +126,7 @@ def start_scan_analysis(tree, interface_option, root):
     clear_threat_list()
     driver(interface_option)
     threat_list = get_threat_list()
-    if len(threat_list) > 0:
-        print(f"TESTING {threat_list}")
-    else:
+    if not (len(threat_list) > 0):
         print("No threats found")
         display_no_threats_found(root)
     populate_treeview(threat_list, tree)
@@ -198,9 +195,6 @@ def main():
 
     window_width = 600
     window_height = 400
-
-    # my commit message should be ASS
-
 
     # Get the screen width and height
     screen_width = root.winfo_screenwidth()

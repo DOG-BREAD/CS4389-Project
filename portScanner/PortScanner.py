@@ -83,5 +83,6 @@ if __name__ == "__main__":
     print(str(target))
     test = PortScanner()
     test.scan_ports(target)
+    print("Finished Scanning For Open Ports")
     exit(0)
     
