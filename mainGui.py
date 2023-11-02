@@ -117,13 +117,15 @@ def analyzeWindow(interface_option: list):
     progress_window = tk.Toplevel(root)
     progress_window.title("Analyzer")
     progress_window.geometry("2000x750")
-    progress_window.configure(bg='#F38102')
+    progress_window.configure(bg='#e87500')
     global hasbooted
     hasbooted = True
 
     global test_label_var
     test_label_var = tk.StringVar()
+    # tk.
     test_label_var.set(f"Port Scanning Analysis: Interface: {interface_option[0]}, IP: {interface_option[1]}")
+
     
     test_label = tk.Label(progress_window, textvariable=test_label_var)
     test_label.pack()
@@ -138,7 +140,7 @@ def analyzeWindow(interface_option: list):
     clear_interface_button.pack(padx=5, pady=2)
     
     tree = ttk.Treeview(progress_window)
-    ttk.Style().configure("Treeview", font=('Helvetica', 12),background ="#00cc00", fieldbackground="#00cc00",foreground="#000000" )
+    ttk.Style().configure("Treeview", font=('Helvetica', 12),background ="#154734", fieldbackground="#154734",foreground="white"  )
     
     tree.config(height=15, show='headings')
     tree.pack(fill='both', expand=True)
