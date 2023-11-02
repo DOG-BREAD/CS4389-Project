@@ -95,12 +95,8 @@ def getInterface():
                 clear_threat_list()
                 return
             else:
-                # thread.start()
                 clear_threat_list()
-                # analyzeWindow(interface_option)
-                thread = threading.Thread(target=analyzeWindow, args=[interface_option])
-                thread.start()
-                
+                analyzeWindow(interface_option)
                 interface_option = None
                 root.mainloop()
                 
@@ -152,7 +148,6 @@ def analyzeWindow(interface_option: list):
 
     global test_label_var
     test_label_var = tk.StringVar()
-    # tk.
     test_label_var.set(f"Port Scanning Analysis: Interface: {interface_option[0]}, IP: {interface_option[1]}")
 
     
@@ -162,8 +157,6 @@ def analyzeWindow(interface_option: list):
     # create a button to start the test
     start_test_button = tk.Button(progress_window, text="Start Detection & Analysis", command=lambda: start_scan_analysis(tree, interface_option))
     start_test_button.pack(padx=5, pady=2)
-    
-    # stop_test_button = tk.Button(progress_window, text="Stop Detection & Analysis", command=lambda: stop_scan_analysis())
     
     clear_interface_button = tk.Button(progress_window, text="Clear Results & Change Interface", command=lambda: clear_interface(tree, progress_window))
     clear_interface_button.pack(padx=5, pady=2)
