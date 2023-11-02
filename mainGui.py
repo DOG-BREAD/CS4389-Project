@@ -88,7 +88,6 @@ def populate_treeview(data_frame, tree):
     tree.heading("#0", text="Index")  # Special column for index
     for column in data_frame.columns:
         tree.heading(column, text=column)
-        # tree.column(column, anchor='center')
         tree.column(column, width=100)  # Adjust the width as needed
 
     # Insert the data into the Treeview
@@ -112,7 +111,7 @@ def clear_interface(tree, progress_window):
 def analyzeWindow(interface_option: list):
     progress_window = tk.Toplevel(root)
     progress_window.title("Analyzer")
-    progress_window.geometry("2000x750")
+    progress_window.attributes('-fullscreen', True)
     progress_window.configure(bg='#e87500')
     global hasbooted
     hasbooted = True
@@ -140,11 +139,7 @@ def analyzeWindow(interface_option: list):
 
     data_frame = get_threat_list()
     populate_treeview(data_frame, tree)
-    
     hasbooted = False
-
-    # root.protocol("WM_DELETE_WINDOW", destroy(progress_window))
-    # root.mainloop()
     
 def main():
     global root
