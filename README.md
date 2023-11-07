@@ -2,31 +2,18 @@
 CS4389 Semester Project
 
 Python requirements - Python 3.11 or newer
+There are no operating system requirements. We designed the program purely in Python to avoid this issue.
 
 We recommend creating a virtual environment and utilizing our requirements.txt 
 
+For help please check **here**
+https://www.freecodecamp.org/news/how-to-setup-virtual-environments-in-python/
+
 ```pip install -r requirements.txt```
 
-GUI
+Please launch the **GUI**
 
 ```python gui/mainGui.py```
 
-```python gui/newGUI.py```
-
-Analysis
-
-```python Analyzer/main.py```
-
-Will ask you to choose the network interface and the amount of time in seconds in the terminal.
-
-PortScanning
-
-```python portScanner/PortScanner.py```
-
-Will scan all ports for IP address entered and store it in a list.
-
-#Future Additions
-Additional scan technique detection: analysis techniques such as syn flood attack detection and response.
-Data visualization of analysis and scanning results.
-GUI integrations with analysis and scanning.
+The GUI will run all required functionality. 
 
