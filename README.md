@@ -4,6 +4,11 @@ CS4389 Semester Project
 Python requirements - Python 3.11 or newer
 There are no operating system requirements. We designed the program purely in Python to avoid this issue.
 
+##########################################################################
+#**NOTE** requires Tshark                                                #
+#The easiest way to obtain Tshark is to install WireShark on your device.#
+##########################################################################
+
 We recommend creating a virtual environment and utilizing our requirements.txt 
 
 For help please check **here**
