@@ -175,7 +175,7 @@ def display_no_threats_found(root):
 def analyzeWindow(interface_option: list):
     progress_window = tk.Toplevel(root)
     progress_window.title("Analyzer")
-    progress_window.attributes('-fullscreen', True)
+    progress_window.geometry("2000x800")
     progress_window.configure(bg='#e87500')
     global hasbooted
     hasbooted = True
@@ -211,7 +211,7 @@ def main():
     root.title("Port Scanner")
 
     window_width = 600
-    window_height = 400
+    window_height = 500
 
     # Get the screen width and height
     screen_width = root.winfo_screenwidth()
